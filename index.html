@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hist 90.15 — Early Modern India: Final Exam Prep</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d2e;
+    --surface2: #252840;
+    --accent: #7c6af7;
+    --accent2: #e8b86d;
+    --accent3: #5ec9a0;
+    --accent4: #e87070;
+    --text: #e8e9f0;
+    --text-muted: #8b8fa8;
+    --border: #2e3250;
+    --card-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,17,23,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 24px; height: 58px;
+    flex-wrap: wrap;
+  }
+  nav h1 { font-size: 15px; font-weight: 700; color: var(--accent2); white-space: nowrap; margin-right: 12px; }
+  .nav-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-muted); padding: 6px 16px; border-radius: 20px;
+    cursor: pointer; font-size: 13px; transition: all 0.2s;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--accent); border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 32px 24px; max-width: 1200px; margin: 0 auto; }
+  .section.active { display: block; }
+  .section-title {
+    font-size: 28px; font-weight: 800; margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .section-subtitle { color: var(--text-muted); margin-bottom: 32px; font-size: 14px; }
+
+  /* FLASHCARDS */
+  .flashcard-controls {
+    display: flex; gap: 12px; align-items: center; margin-bottom: 24px; flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text-muted); padding: 7px 18px; border-radius: 20px;
+    cursor: pointer; font-size: 13px; transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .fc-progress { margin-left: auto; font-size: 13px; color: var(--text-muted); }
+
+  .flashcard-area {
+    display: flex; flex-direction: column; align-items: center; gap: 24px;
+  }
+  .fc-scene {
+    width: 100%; max-width: 640px; height: 320px;
+    perspective: 1200px; cursor: pointer;
+  }
+  .fc-inner {
+    width: 100%; height: 100%;
+    position: relative; transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(.4,0,.2,1);
+  }
+  .fc-scene.flipped .fc-inner { transform: rotateY(180deg); }
+  .fc-front, .fc-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 32px; text-align: center;
+    box-shadow: var(--card-shadow);
+  }
+  .fc-front {
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+  }
+  .fc-front .fc-label {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 20px; font-weight: 600;
+  }
+  .fc-front .fc-term { font-size: 30px; font-weight: 800; color: var(--text); line-height: 1.2; }
+  .fc-front .fc-lecture { font-size: 12px; color: var(--text-muted); margin-top: 12px; }
+  .fc-back {
+    background: linear-gradient(135deg, #1e1560, #2a1f6e);
+    border: 1px solid var(--accent);
+    transform: rotateY(180deg);
+  }
+  .fc-back .fc-def { font-size: 17px; color: var(--text); line-height: 1.65; }
+  .fc-back .fc-connection { font-size: 13px; color: var(--accent3); margin-top: 14px; font-style: italic; }
+
+  .fc-nav { display: flex; gap: 16px; align-items: center; }
+  .fc-nav button {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 10px 28px; border-radius: 8px;
+    cursor: pointer; font-size: 14px; transition: all 0.2s;
+  }
+  .fc-nav button:hover { background: var(--accent); border-color: var(--accent); }
+  .fc-nav .fc-counter { font-size: 14px; color: var(--text-muted); min-width: 80px; text-align: center; }
+  .fc-hint { font-size: 12px; color: var(--text-muted); text-align: center; }
+
+  /* READINGS */
+  .readings-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+  .reading-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+  .reading-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .reading-card.expanded { border-color: var(--accent); }
+  .rc-label {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 8px; font-weight: 600;
+  }
+  .rc-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .rc-author { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .rc-thesis {
+    font-size: 14px; color: var(--accent2); font-style: italic;
+    border-left: 3px solid var(--accent2); padding-left: 12px;
+    margin-bottom: 16px; line-height: 1.6;
+  }
+  .rc-arguments { display: none; }
+  .reading-card.expanded .rc-arguments { display: block; }
+  .rc-arguments h4 { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .rc-arguments ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .rc-arguments li {
+    font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    padding-left: 16px; position: relative;
+  }
+  .rc-arguments li::before { content: "→"; position: absolute; left: 0; color: var(--accent3); }
+  .rc-terms {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px;
+  }
+  .rc-term-tag {
+    background: rgba(124,106,247,0.15); border: 1px solid rgba(124,106,247,0.3);
+    color: var(--accent); padding: 3px 10px; border-radius: 12px;
+    font-size: 11px; font-weight: 600; cursor: pointer;
+  }
+  .rc-term-tag:hover { background: var(--accent); color: #fff; }
+  .expand-hint { font-size: 12px; color: var(--text-muted); margin-top: 12px; }
+
+  /* MIND MAP */
+  #mindmap-section { max-width: 1400px; }
+  .mindmap-container {
+    display: flex; gap: 24px; flex-wrap: wrap;
+  }
+  .mm-sidebar {
+    width: 280px; flex-shrink: 0;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .mm-sidebar h3 { font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+  .mm-theme-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px; cursor: pointer;
+    display: flex; align-items: center; gap: 10px; transition: all 0.2s;
+    text-align: left;
+  }
+  .mm-theme-btn:hover { border-color: var(--accent); }
+  .mm-theme-btn.active { border-color: var(--accent); background: rgba(124,106,247,0.1); }
+  .mm-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .mm-theme-name { font-size: 13px; font-weight: 600; }
+  .mm-theme-sub { font-size: 11px; color: var(--text-muted); }
+
+  .mm-canvas { flex: 1; min-width: 600px; }
+  #mm-svg { width: 100%; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); }
+  .mm-legend {
+    display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px;
+  }
+  .mm-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+  .mm-legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* QUIZ */
+  .quiz-container { max-width: 680px; margin: 0 auto; }
+  .quiz-start {
+    text-align: center; padding: 60px 40px;
+    background: var(--surface); border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+  .quiz-start h2 { font-size: 26px; font-weight: 800; margin-bottom: 16px; }
+  .quiz-start p { color: var(--text-muted); margin-bottom: 32px; line-height: 1.6; }
+  .btn-primary {
+    background: var(--accent); color: #fff; border: none;
+    padding: 14px 36px; border-radius: 8px; font-size: 15px;
+    font-weight: 600; cursor: pointer; transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .quiz-question { display: none; }
+  .quiz-question.active { display: block; }
+  .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .q-num { font-size: 13px; color: var(--text-muted); }
+  .q-progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 32px; }
+  .q-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.4s; }
+  .q-text { font-size: 20px; font-weight: 700; margin-bottom: 28px; line-height: 1.4; }
+  .q-options { display: flex; flex-direction: column; gap: 12px; }
+  .q-option {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 20px; cursor: pointer;
+    font-size: 15px; text-align: left; transition: all 0.2s;
+    color: var(--text);
+  }
+  .q-option:hover:not(:disabled) { border-color: var(--accent); background: rgba(124,106,247,0.1); }
+  .q-option.correct { background: rgba(94,201,160,0.2); border-color: var(--accent3); color: var(--accent3); }
+  .q-option.wrong { background: rgba(232,112,112,0.2); border-color: var(--accent4); color: var(--accent4); }
+  .q-option:disabled { cursor: default; }
+  .q-feedback { margin-top: 20px; padding: 16px; border-radius: 8px; font-size: 14px; line-height: 1.6; display: none; }
+  .q-feedback.show { display: block; }
+  .q-feedback.correct-fb { background: rgba(94,201,160,0.1); border: 1px solid var(--accent3); color: var(--accent3); }
+  .q-feedback.wrong-fb { background: rgba(232,112,112,0.1); border: 1px solid var(--accent4); color: var(--accent4); }
+  .q-next { margin-top: 20px; }
+  .quiz-result { text-align: center; padding: 48px; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); display: none; }
+  .quiz-result.show { display: block; }
+  .result-score { font-size: 56px; font-weight: 900; color: var(--accent); }
+  .result-label { font-size: 18px; margin: 8px 0 24px; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 12px; top: 0; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .tl-item { position: relative; margin-bottom: 32px; }
+  .tl-dot {
+    position: absolute; left: -26px; top: 4px;
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--bg);
+  }
+  .tl-date { font-size: 12px; color: var(--accent2); font-weight: 700; margin-bottom: 6px; }
+  .tl-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .tl-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .tl-tag {
+    background: var(--surface2); padding: 2px 10px; border-radius: 10px;
+    font-size: 11px; color: var(--text-muted);
+  }
+
+  /* SEARCH */
+  .search-bar {
+    position: relative; margin-bottom: 28px;
+  }
+  .search-input {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 48px 14px 20px;
+    color: var(--text); font-size: 15px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+  /* TOOLTIP */
+  .tooltip { position: relative; cursor: help; }
+  .tooltip::after {
+    content: attr(data-tip);
+    position: absolute; bottom: calc(100% + 8px); left: 50%;
+    transform: translateX(-50%); background: #222;
+    color: var(--text); font-size: 12px; padding: 6px 12px;
+    border-radius: 6px; white-space: nowrap; pointer-events: none;
+    opacity: 0; transition: opacity 0.2s; z-index: 999;
+    border: 1px solid var(--border); max-width: 260px; white-space: normal;
+  }
+  .tooltip:hover::after { opacity: 1; }
+
+  /* MIND MAP REDESIGN */
+  .mm-filter-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+  .mm-layout { display:flex; gap:20px; align-items:flex-start; }
+  .mm-graph-area { flex:1; min-width:0; }
+  .mm-detail-panel {
+    width:300px; flex-shrink:0;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); padding:20px;
+    max-height:520px; overflow-y:auto;
+  }
+  .mm-placeholder { text-align:center; color:var(--text-muted); padding:32px 12px; line-height:1.6; }
+  .mm-detail-cat { font-size:11px; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; font-weight:700; }
+  .mm-detail-title { font-size:16px; font-weight:800; margin-bottom:3px; line-height:1.3; color:var(--text); }
+  .mm-detail-sub { font-size:12px; color:var(--text-muted); margin-bottom:14px; }
+  .mm-detail-thesis { font-style:italic; border-left:3px solid var(--accent2); padding-left:10px; color:var(--accent2); margin-bottom:14px; line-height:1.6; font-size:13px; }
+  .mm-section-label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); margin:12px 0 7px; font-weight:700; }
+  .mm-args { list-style:none; display:flex; flex-direction:column; gap:7px; }
+  .mm-args li { padding-left:14px; position:relative; color:var(--text-muted); line-height:1.55; font-size:12px; }
+  .mm-args li::before { content:"→"; position:absolute; left:0; color:var(--accent3); }
+  .mm-chips { display:flex; flex-wrap:wrap; gap:5px; }
+  .mm-chip {
+    background:rgba(124,106,247,0.15); border:1px solid rgba(124,106,247,0.3);
+    color:var(--accent); padding:3px 9px; border-radius:12px; font-size:11px; font-weight:600;
+    cursor:pointer; transition:background 0.15s;
+  }
+  .mm-chip:hover { background:var(--accent); color:#fff; }
+  .mm-chip.rchip { background:rgba(232,184,109,0.12); border-color:rgba(232,184,109,0.3); color:var(--accent2); }
+  .mm-chip.rchip:hover { background:var(--accent2); color:#000; }
+  .mm-go-btn { margin-top:12px; font-size:12px; padding:7px 16px; }
+
+  /* MOBILE */
+  @media (max-width: 700px) {
+    .section { padding: 20px 16px; }
+    .fc-scene { height: 260px; }
+    .fc-front .fc-term { font-size: 22px; }
+    .readings-grid { grid-template-columns: 1fr; }
+    .mm-layout { flex-direction:column; }
+    .mm-detail-panel { width:100%; max-height:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <h1>Hist 90.15 — Early Modern India</h1>
+  <button class="nav-btn active" onclick="showSection('flashcards')">Flashcards</button>
+  <button class="nav-btn" onclick="showSection('readings')">Readings</button>
+  <button class="nav-btn" onclick="showSection('mindmap')">Mind Map</button>
+  <button class="nav-btn" onclick="showSection('quiz')">Quiz</button>
+  <button class="nav-btn" onclick="showSection('timeline')">Timeline</button>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     FLASHCARDS
+═══════════════════════════════════════ -->
+<section id="flashcards" class="section active">
+  <div class="section-title">Vocabulary Flashcards</div>
+  <div class="section-subtitle">Click a card to flip it. All key terms from Lectures 14–24.</div>
+
+  <div class="flashcard-controls">
+    <button class="filter-btn active" onclick="filterCards('all', this)">All Terms</button>
+    <button class="filter-btn" onclick="filterCards('L14', this)">Lec 14</button>
+    <button class="filter-btn" onclick="filterCards('L15', this)">Lec 15</button>
+    <button class="filter-btn" onclick="filterCards('L16', this)">Lec 16</button>
+    <button class="filter-btn" onclick="filterCards('L17', this)">Lec 17</button>
+    <button class="filter-btn" onclick="filterCards('L18', this)">Lec 18</button>
+    <button class="filter-btn" onclick="filterCards('L20', this)">Lec 20</button>
+    <button class="filter-btn" onclick="filterCards('L21', this)">Lec 21</button>
+    <button class="filter-btn" onclick="filterCards('L22', this)">Lec 22</button>
+    <button class="filter-btn" onclick="filterCards('L23', this)">Lec 23</button>
+    <button class="filter-btn" onclick="filterCards('L24', this)">Lec 24</button>
+    <span class="fc-progress" id="fc-progress"></span>
+  </div>
+
+  <div class="flashcard-area">
+    <div class="fc-scene" id="fc-scene" onclick="flipCard()">
+      <div class="fc-inner" id="fc-inner">
+        <div class="fc-front">
+          <div class="fc-label">Term</div>
+          <div class="fc-term" id="fc-term">—</div>
+          <div class="fc-lecture" id="fc-lecture"></div>
+        </div>
+        <div class="fc-back">
+          <div class="fc-def" id="fc-def">—</div>
+          <div class="fc-connection" id="fc-connection"></div>
+        </div>
+      </div>
+    </div>
+    <p class="fc-hint">Click card to flip • Use arrows to navigate</p>
+    <div class="fc-nav">
+      <button onclick="prevCard()">← Prev</button>
+      <span class="fc-counter" id="fc-counter">1 / 1</span>
+      <button onclick="nextCard()">Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     READINGS
+═══════════════════════════════════════ -->
+<section id="readings" class="section">
+  <div class="section-title">Readings & Arguments</div>
+  <div class="section-subtitle">Click a card to expand the full argument summary. Tags link to related vocab terms.</div>
+  <div class="search-bar">
+    <input class="search-input" id="reading-search" placeholder="Search by author, keyword, or argument..." oninput="searchReadings()">
+    <span class="search-icon">🔍</span>
+  </div>
+  <div class="readings-grid" id="readings-grid"></div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     MIND MAP
+═══════════════════════════════════════ -->
+<section id="mindmap" class="section">
+  <div class="section-title">Concept Mind Map</div>
+  <div class="section-subtitle">Click any <strong style="color:#e8b86d">reading node</strong> to see its arguments. Click any <strong style="color:#a99ffa">vocab node</strong> to see its definition and connected readings.</div>
+
+  <div class="mm-filter-row">
+    <button class="filter-btn active mm-flt" onclick="mmSetTheme('all',this)">All</button>
+    <button class="filter-btn mm-flt" onclick="mmSetTheme('empire',this)">Empire &amp; Conquest</button>
+    <button class="filter-btn mm-flt" onclick="mmSetTheme('caste',this)">Caste &amp; Society</button>
+    <button class="filter-btn mm-flt" onclick="mmSetTheme('trade',this)">Trade &amp; Ocean</button>
+    <button class="filter-btn mm-flt" onclick="mmSetTheme('mughal',this)">Mughal Decline</button>
+    <button class="filter-btn mm-flt" onclick="mmSetTheme('culture',this)">Culture &amp; Identity</button>
+  </div>
+
+  <div class="mm-layout">
+    <div class="mm-graph-area">
+      <svg id="mm-svg" viewBox="0 0 580 510" width="100%" style="display:block;border-radius:12px;background:var(--surface);border:1px solid var(--border)"></svg>
+      <div class="mm-legend" style="margin-top:10px">
+        <div class="mm-legend-item"><div class="mm-legend-dot" style="background:#e8b86d"></div>Reading / Author</div>
+        <div class="mm-legend-item"><div class="mm-legend-dot" style="background:#a99ffa"></div>Vocab Term</div>
+        <div class="mm-legend-item"><div class="mm-legend-dot" style="background:#5ec9a0;width:20px;height:2px;border-radius:1px"></div>Thematic link</div>
+      </div>
+    </div>
+    <div class="mm-detail-panel" id="mm-detail">
+      <div class="mm-placeholder">
+        <div style="font-size:28px;margin-bottom:10px">🗺</div>
+        <strong>Click any node to explore</strong><br><br>
+        <span style="font-size:12px">Reading nodes show thesis &amp; key arguments.<br>Vocab nodes show definition &amp; which readings discuss them.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     QUIZ
+═══════════════════════════════════════ -->
+<section id="quiz" class="section">
+  <div class="section-title">Practice Quiz</div>
+  <div class="section-subtitle">Test your knowledge with 15 randomized questions from all topics.</div>
+  <div class="quiz-container">
+    <div class="quiz-start" id="quiz-start">
+      <h2>Ready to Test Yourself?</h2>
+      <p>15 multiple-choice questions covering vocabulary, reading arguments, key events, and historical themes from Hist 90.15. After each answer you'll see an explanation.</p>
+      <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
+    </div>
+    <div id="quiz-body" style="display:none">
+      <div class="q-header">
+        <span class="q-num" id="q-num">Question 1 of 15</span>
+        <span id="q-score-live" style="font-size:13px;color:var(--accent3)"></span>
+      </div>
+      <div class="q-progress-bar"><div class="q-progress-fill" id="q-fill" style="width:0%"></div></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-options" id="q-options"></div>
+      <div class="q-feedback" id="q-feedback"></div>
+      <div class="q-next"><button class="btn-primary" id="q-next-btn" onclick="nextQuestion()" style="display:none">Next Question →</button></div>
+    </div>
+    <div class="quiz-result" id="quiz-result">
+      <div class="result-score" id="result-score"></div>
+      <div class="result-label" id="result-label"></div>
+      <p style="color:var(--text-muted);margin-bottom:32px">Review your flashcards and reading summaries to strengthen any weak areas.</p>
+      <button class="btn-primary" onclick="restartQuiz()">Try Again</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     TIMELINE
+═══════════════════════════════════════ -->
+<section id="timeline" class="section">
+  <div class="section-title">Historical Timeline</div>
+  <div class="section-subtitle">Key events from early modern South Asia, c. 1500–1800.</div>
+  <div class="timeline" id="timeline-list"></div>
+</section>
+
+<script>
+// ════════════════════════════════════════════════════════
+// DATA
+// ════════════════════════════════════════════════════════
+
+const CARDS = [
+  // LECTURE 14 — From Center to Region
+  { id:'peacock-throne', term:'Peacock Throne', lecture:'Lecture 14', tag:'L14',
+    def:'Ornate jeweled throne commissioned by Mughal Emperor Shah Jahan, encrusted with rubies, emeralds, and the Koh-i-Noor diamond. Captured and taken to Persia by Nadir Shah in 1739 — its removal symbolized the collapse of Mughal imperial prestige.',
+    connection:'Connected to: Nadir Shah invasion, Koh-i-Noor, Mughal decline' },
+  { id:'nadir-shah', term:'Nadir Shah', lecture:'Lecture 14', tag:'L14',
+    def:'Persian emperor who invaded Delhi in 1739, sacked the Mughal capital, massacred tens of thousands, and carried off the Peacock Throne and Koh-i-Noor. His invasion marked a definitive turning point in Mughal imperial power.',
+    connection:'Readings: Kaicker shows how Mughal authority was already strained from within even before Nadir Shah.' },
+  { id:'koh-i-noor', term:'Koh-i-Noor', lecture:'Lecture 14', tag:'L14',
+    def:'Legendary diamond ("Mountain of Light") set in the Peacock Throne. Passed from Mughals → Nadir Shah → Afghan rulers → Sikh Empire → British Crown after 1849. Exemplifies how jewels encoded imperial sovereignty and its transfer.',
+    connection:'Related to: Ostroff on how material objects (pearls, diamonds) track imperial succession.' },
+
+  // LECTURE 15 — Painted Pleasures
+  { id:'brahmin-peshwas', term:'Brahmin Peshwas', lecture:'Lecture 15', tag:'L15',
+    def:'Hereditary chief ministers (Peshwas) of the Maratha Confederacy who were Chitpavan Brahmins. As Mughal power declined, they became effective rulers of a powerful regional state, demonstrating the shift of power from Mughals to regional polities.',
+    connection:'Connected to: 18th-century regional successor states, Cherian on Brahmin merchant alliance.' },
+  { id:'murshidabad', term:'Murshidabad', lecture:'Lecture 15', tag:'L15',
+    def:'Capital of the Nawabs of Bengal, one of the wealthiest successor states to Mughal rule. The Nawab Siraj ud-Daulah ruled here before the Battle of Plassey (1757) ended Bengali independence.',
+    connection:'Readings: Travers, Metcalf & Metcalf on EIC conquest of Bengal.' },
+  { id:'nawabs-awadh', term:'Nawabs of Awadh', lecture:'Lecture 15', tag:'L15',
+    def:'Powerful Muslim successor state to the Mughals, based in Lucknow. Known for refined court culture, Urdu poetry (rekhta), and patronage of arts. Exemplifies how regional rulers reinvented Mughal cultural prestige.',
+    connection:'Related to: rekhta, Begum Samru, Sardhana (Lecture 17).' },
+  { id:'nizams-hyderabad', term:'Nizams of Hyderabad', lecture:'Lecture 15', tag:'L15',
+    def:'Muslim rulers of the Deccan who broke from Mughal suzerainty after 1724. Hyderabad became one of the most powerful and durable successor states, persisting until 1948.',
+    connection:'Connected to: Carnatic Wars, Dupleix\'s interventions in succession disputes.' },
+  { id:'mewar-udaipur', term:'Mewar / Udaipur', lecture:'Lecture 15', tag:'L15',
+    def:'Rajput kingdom in Rajasthan known for its distinctive painted pleasures tradition. Udaipur\'s lake palaces and miniature paintings reflect how regional states patronized art forms distinct from Mughal aesthetics.',
+    connection:'Connected to: Khera "Lakes Within Lake Palaces," regional arts.' },
+
+  // LECTURE 16 — Consolidating Caste Hierarchies
+  { id:'baoli', term:'Baoli', lecture:'Lecture 16', tag:'L16',
+    def:'Stepwell — an architectural form for water access in Rajasthan. The lecture uses the baoli as a lens to examine social exclusion, as different caste groups had different rights of access to water sources.',
+    connection:'Related to: caste hierarchy, Dalit exclusion, Cherian on Marwar.' },
+  { id:'vijai-singh', term:'Vijai Singh', lecture:'Lecture 16', tag:'L16',
+    def:'18th-century Rathor ruler of Marwar (Jodhpur) whose reign is central to Cherian\'s analysis of how state law codified caste and gender hierarchies in pre-colonial India.',
+    connection:'Reading: Cherian — Vijai Singh\'s Sanad Parwana Bahis records show criminalization of lower-caste women\'s sexuality.' },
+  { id:'gulab-rai', term:'Gulab Rai', lecture:'Lecture 16', tag:'L16',
+    def:'A lower-caste woman whose case appears in Cherian\'s "Stolen Skin and Children Thrown." Her case illustrates how state and merchant elites used legal records to discipline gender and caste in 18th-century Marwar.',
+    connection:'Reading: Cherian "Stolen Skin" — key archival example of caste-gender nexus.' },
+  { id:'mahajan', term:'Mahajan', lecture:'Lecture 16', tag:'L16',
+    def:'Merchant/moneylender caste, typically Jain or Vaishnava. In Cherian\'s argument, mahajans rose to economic prominence through global trade and used their new wealth to consolidate "Hindu" identity against lower castes.',
+    connection:'Reading: Cherian Merchants of Virtue — mahajan alliance with Brahmin state power.' },
+  { id:'varna', term:'Varna', lecture:'Lecture 16', tag:'L16',
+    def:'The four-tiered ritual hierarchy of classical Hindu texts: Brahmin (priests), Kshatriya (warriors), Vaishya (merchants), Shudra (cultivators). Distinct from jati but used to legitimate jati hierarchies.',
+    connection:'Related to: jati, caste, Ambedkar (Lecture 18).' },
+  { id:'jati', term:'Jati', lecture:'Lecture 16', tag:'L16',
+    def:'Endogamous kinship group — the practical, lived unit of "caste" in South Asian society. Thousands of jatis are organized loosely under the four varna categories. Cherian shows how jati boundaries were actively sharpened in the 18th century.',
+    connection:'Readings: Cherian — global capitalism → merchant rise → jati polarization; Ambedkar on endogamy.' },
+  { id:'caste', term:'Caste / Casta', lecture:'Lecture 16', tag:'L16',
+    def:'The Portuguese word "casta" (lineage/race) was applied by European observers to South Asian social hierarchy, producing the English "caste." The term blurs the distinction between varna and jati, but stuck as the dominant colonial framing.',
+    connection:'Related to: Ostroff (Portuguese presence), Cherian, Ambedkar.' },
+  { id:'dalit', term:'Dalit', lecture:'Lecture 16', tag:'L16',
+    def:'"Broken/oppressed" — self-chosen term for those historically classified as "Untouchable" (outside the four-varna system). Popularized by B.R. Ambedkar\'s movement. Dalits bore hereditary pollution stigma and exclusion from shared resources.',
+    connection:'Reading: Ambedkar (Lecture 18) — endogamy as the mechanism of Untouchability.' },
+  { id:'ahimsa', term:'Ahimsa', lecture:'Lecture 16', tag:'L16',
+    def:'"Non-violence/non-harm" — central ethical principle of Jainism, Buddhism, and Hindu reform movements. The Jain/Vaishnava merchants in Cherian\'s Marwar loudly espoused ahimsa while simultaneously enforcing caste violence against Untouchables.',
+    connection:'Reading: Cherian — hypocrisy of "virtue" merchants who combined ahimsa ideology with caste oppression.' },
+
+  // LECTURE 17 — Seeing Like a Shoemaker
+  { id:'hashiya', term:'Hashiya', lecture:'Lecture 17', tag:'L17',
+    def:'Marginal glosses or borders in Mughal manuscripts and paintings. Kaicker uses the hashiya as a metaphor: just as page margins contain supplementary voices, urban subordinates added marginal voices to Mughal political discourse.',
+    connection:'Reading: Kaicker "Shoemakers\' Riot" — shoemakers as the hashiya of political life.' },
+  { id:'begum-samru', term:'Begum Samru', lecture:'Lecture 17', tag:'L17',
+    def:'Farzana (c.1753–1836), a dancing girl who married a European mercenary, inherited his army, converted to Christianity, and ruled the principality of Sardhana. An extraordinary example of 18th-century social mobility and female power in a fragmented political landscape.',
+    connection:'Illustrates the opportunities for exceptional individuals amid Mughal fragmentation.' },
+  { id:'sardhana', term:'Sardhana', lecture:'Lecture 17', tag:'L17',
+    def:'Small principality near Meerut (north India) ruled by Begum Samru. Site of a Catholic church she built — a striking example of syncretism in the 18th-century political landscape.',
+    connection:'Related to: Begum Samru, Nawabs of Awadh, European mercenaries.' },
+  { id:'rekhta', term:'Rekhta', lecture:'Lecture 17', tag:'L17',
+    def:'An early Urdu poetic form in which Hindi and Persian vocabularies were mixed. Associated with the Nawab courts of Awadh and Delhi. Rekhta was also specifically associated with women\'s registers of Urdu.',
+    connection:'Connected to: Nawabs of Awadh, Sauda, 18th-century court culture.' },
+  { id:'sauda', term:'Sauda', lecture:'Lecture 17', tag:'L17',
+    def:'Mirza Muhammad Rafi Sauda (1713–1781) — one of the greatest Urdu poets of 18th-century Delhi and Lucknow. Known for his satirical verse (hija) lamenting the decline of Mughal Delhi and its court culture.',
+    connection:'Illustrates 18th-century cultural memory of decline through literary form.' },
+
+  // LECTURE 18 — Archives of the Illicit
+  { id:'ambedkar', term:'B.R. Ambedkar', lecture:'Lecture 18', tag:'L18',
+    def:'Bhimrao Ramji Ambedkar (1891–1956) — Dalit jurist, economist, and architect of the Indian Constitution. His essay "Castes in India" (1916) argues that caste is maintained through endogamy enforced on women\'s bodies — Untouchability is the final product of this system.',
+    connection:'Readings: Cherian extends Ambedkar\'s insight to 18th-century Marwar archives.' },
+  { id:'biopower', term:'Biopower / Biopolitics', lecture:'Lecture 18', tag:'L18',
+    def:'Foucauldian concept: state power exerted through management of bodies, sexuality, reproduction, and life itself. Applied by Cherian to show how Marwar state records (Sanad Parwana Bahis) used the regulation of lower-caste women\'s sexuality as a tool of caste discipline.',
+    connection:'Reading: Cherian "Stolen Skin" — biopower + caste = state criminalization of Dalit women\'s sexuality.' },
+  { id:'endogamy', term:'Endogamy', lecture:'Lecture 18', tag:'L18',
+    def:'The practice of marrying within a defined social group. Ambedkar argued that endogamy is the definitional feature of caste — caste boundaries are reproduced generation to generation by controlling who one can marry, enforced most brutally on women.',
+    connection:'Reading: Ambedkar "Castes in India"; Cherian on criminalization of inter-caste sex.' },
+
+  // LECTURE 20 — Competing Incursions
+  { id:'elihu-yale', term:'Elihu Yale', lecture:'Lecture 20', tag:'L20',
+    def:'Governor of Madras (Fort St. George) for the British East India Company 1687–1692. Made a fortune in the India trade (including enslaved people). Later donated funds to a college in Connecticut that was renamed Yale University in his honor.',
+    connection:'Illustrates how fortunes made in the India trade transformed European and American institutions.' },
+  { id:'joint-stock', term:'Joint-Stock Company', lecture:'Lecture 20', tag:'L20',
+    def:'A form of business enterprise where ownership is divided into shares sold to multiple investors, who bear risk proportionally. Both the Dutch VOC and British EIC were joint-stock companies — this structure enabled the pooling of capital for expensive, risky long-distance trade.',
+    connection:'Related to: VOC, EIC, Metcalf & Metcalf on EIC structure.' },
+  { id:'voc', term:'VOC (Dutch East India Company)', lecture:'Lecture 20', tag:'L20',
+    def:'Vereenigde Oostindische Compagnie — Dutch East India Company (est. 1602). The world\'s first joint-stock company with quasi-governmental powers. Dominated Asian trade in the 17th century; succeeded the Portuguese Estado da India in many regions.',
+    connection:'Readings: Roy "Indian Ocean Trade," Ostroff on VOC in pearl fisheries.' },
+  { id:'eic', term:'British East India Company (EIC)', lecture:'Lecture 20', tag:'L20',
+    def:'English/British trading company founded 1600. Evolved from a commercial venture into a territorial power, governing vast regions of South Asia by the 18th century. The EIC is central to Travers\'s analysis of the ideology of British expansion.',
+    connection:'Readings: Travers, Metcalf & Metcalf, Ostroff — EIC as trading company turned imperial ruler.' },
+  { id:'madras', term:'Madras (Chennai)', lecture:'Lecture 20', tag:'L20',
+    def:'British EIC presidency established at Fort St. George (1639). One of the three presidency cities (with Calcutta and Bombay) that became nodes of British territorial power in India.',
+    connection:'Related to: Carnatic Wars, Elihu Yale, Dupleix\'s French base at Pondicherry.' },
+  { id:'calcutta', term:'Calcutta (Kolkata)', lecture:'Lecture 20', tag:'L20',
+    def:'Founded as Fort William by the EIC (late 17th c.), became capital of British Bengal. Site of the "Black Hole of Calcutta" (1756) that served as British justification for conquest. Became the capital of British India.',
+    connection:'Readings: Travers on Bengal, Metcalf & Metcalf on Diwani.' },
+  { id:'bombay', term:'Bombay (Mumbai)', lecture:'Lecture 20', tag:'L20',
+    def:'Portuguese possession passed to the English Crown as part of Catherine of Braganza\'s dowry (1661), then leased to the EIC. Became a major western India trading hub.',
+    connection:'Connected to: Portuguese Estado da India, EIC expansion.' },
+  { id:'pondicherry', term:'Pondichéry', lecture:'Lecture 20', tag:'L20',
+    def:'French East India Company\'s main settlement on the Coromandel Coast. Base for Dupleix\'s strategy of intervening in Indian succession disputes to establish French influence. Lost to the British after the Carnatic Wars.',
+    connection:'Reading: Metcalf & Metcalf on French-British rivalry; Marsh on Pondichéry.' },
+
+  // LECTURE 21 — A Bejeweled Sea
+  { id:'palk-strait', term:'Palk Strait', lecture:'Lecture 21', tag:'L21',
+    def:'The narrow body of water between southeastern India (Tamil Nadu) and northern Sri Lanka. Historically the site of pearl fisheries managed successively by Portuguese, Dutch, and British colonial powers.',
+    connection:'Reading: Ostroff "Can the Oyster Speak?" — pearl fisheries in Palk Strait/Gulf of Mannar.' },
+  { id:'gulf-mannar', term:'Gulf of Mannar', lecture:'Lecture 21', tag:'L21',
+    def:'The sea area between southern India and Sri Lanka, historically home to some of the world\'s richest pearl oyster beds. The pearl fishery here was a major site of imperial revenue and sovereignty.',
+    connection:'Reading: Ostroff — oysters as non-human actors shaping imperial history.' },
+  { id:'colombo', term:'Colombo', lecture:'Lecture 21', tag:'L21',
+    def:'Main port of Sri Lanka, fortified by the Portuguese (1518) and then taken by the Dutch VOC (1656). Colombo\'s control was tied to the lucrative cinnamon trade and pearls.',
+    connection:'Related to: VOC, Estado da India, Kingdom of Kandy.' },
+  { id:'pearls', term:'Pearls', lecture:'Lecture 21', tag:'L21',
+    def:'Luxury trade commodity extracted from the Gulf of Mannar and Palk Strait. Pearl fisheries were deeply entangled with imperial sovereignty — controlling the fishery meant controlling revenue, labor, and environmental management.',
+    connection:'Reading: Ostroff — oysters as historical actors; Roy on Indian Ocean luxury trade.' },
+  { id:'cinnamon', term:'Cinnamon', lecture:'Lecture 21', tag:'L21',
+    def:'Sri Lanka was the world\'s primary source of "true cinnamon" (Cinnamomum verum). Control of cinnamon was a major motivation for Portuguese, then Dutch colonization of coastal Ceylon. The VOC maintained a brutal cinnamon monopoly.',
+    connection:'Related to: VOC, Ceylon/Ceilão, Estado da India.' },
+  { id:'ceylon', term:'Ceylon / Ceilão', lecture:'Lecture 21', tag:'L21',
+    def:'Portuguese name for Sri Lanka (derived from Sinhala "Sīhaḷa"). The Portuguese established coastal fortifications; the Dutch VOC took over in 1658; the British took it in 1796. The interior Kingdom of Kandy remained independent until 1815.',
+    connection:'Reading: Ostroff on Portuguese → VOC → British succession in Ceylon.' },
+  { id:'kingdom-kandy', term:'Kingdom of Kandy', lecture:'Lecture 21', tag:'L21',
+    def:'Highland kingdom in interior Sri Lanka. Alone among South Asian polities, Kandy successfully resisted Portuguese and Dutch conquest, only falling to the British in 1815. The kingdom\'s position demonstrates limits of coastal European power.',
+    connection:'Illustrates how geography constrained European colonial reach.' },
+
+  // LECTURE 22 — Company Conquest
+  { id:'nabob', term:'Nabob', lecture:'Lecture 22', tag:'L22',
+    def:'An Anglicization of "Nawab" — used mockingly for Britons who returned from India fabulously wealthy after exploiting Company opportunities. The "nabob" became a symbol of corrupt, ill-gotten Eastern wealth in 18th-century British politics.',
+    connection:'Connected to: Travers on Company servants\' frontier patriotism; Robert Clive as archetypal nabob.' },
+  { id:'carnatic-wars', term:'Carnatic Wars', lecture:'Lecture 22', tag:'L22',
+    def:'Three wars (1746–1763) between French and British East India Companies on the Coromandel Coast, fought largely by intervening in rival Indian succession disputes. The British victory ended French territorial ambitions in India.',
+    connection:'Readings: Metcalf & Metcalf on Dupleix; Ananda Ranga Pillai diary provides an Indian perspective.' },
+  { id:'dupleix', term:'Joseph-François Dupleix', lecture:'Lecture 22', tag:'L22',
+    def:'French Governor-General of Pondichéry who pioneered the strategy of intervening in Indian succession disputes to place French-backed candidates on thrones in exchange for territorial concessions. His strategy was later adopted (more successfully) by the British.',
+    connection:'Readings: Metcalf & Metcalf — British learned from Dupleix\'s playbook.' },
+  { id:'ananda-ranga-pillai', term:'Ananda Ranga Pillai', lecture:'Lecture 22', tag:'L22',
+    def:'Chief dubash (broker/interpreter) to Dupleix at Pondichéry. His detailed diary (1736–1760) offers a rare Indian perspective on the French-British rivalry and the Carnatic Wars — one of the most valuable primary sources for this period.',
+    connection:'Primary source: Ananda Ranga Pillai Diary — broker\'s view from the middle.' },
+  { id:'robert-clive', term:'Robert Clive', lecture:'Lecture 22', tag:'L22',
+    def:'British EIC officer who won the Battle of Plassey (1757), establishing British dominance in Bengal. Made a vast personal fortune, returned to Britain as a nabob, and was later accused of corruption. Credited (controversially) as the founder of British India.',
+    connection:'Readings: Travers — Clive\'s expansion driven by "frontier patriotism" ideology.' },
+  { id:'siraj-ud-daulah', term:'Siraj ud-Daulah', lecture:'Lecture 22', tag:'L22',
+    def:'Nawab of Bengal (r.1756–57) who clashed with the EIC over fortifications in Calcutta, leading to the "Black Hole" episode. He was defeated at Plassey partly through the treachery of his general Mir Jafar, whom the EIC had bribed.',
+    connection:'Reading: Metcalf & Metcalf on the Black Hole; Travers on EIC justifications for conquest.' },
+  { id:'mir-jafar', term:'Mir Jafar', lecture:'Lecture 22', tag:'L22',
+    def:'General of Siraj ud-Daulah who conspired with Clive before Plassey and held back his forces during the battle. Installed as Nawab of Bengal by the EIC in reward — became a synonym for "traitor" in Bengali/Indian political culture.',
+    connection:'Reading: Travers — Mir Jafar episode as foundational moment of EIC territorial rule.' },
+  { id:'plassey', term:'Battle of Plassey (1757)', lecture:'Lecture 22', tag:'L22',
+    def:'Decisive military engagement (June 23, 1757) in which Clive\'s EIC force defeated Siraj ud-Daulah\'s army, thanks largely to Mir Jafar\'s pre-arranged betrayal. Often cited as the beginning of British territorial empire in India.',
+    connection:'Readings: Travers, Metcalf & Metcalf — Plassey is the pivot point for both narratives.' },
+  { id:'baksar', term:'Battle of Baksar (1764)', lecture:'Lecture 22', tag:'L22',
+    def:'Battle in which the EIC defeated a coalition of the Nawab of Awadh, Mir Qasim (Nawab of Bengal), and the Mughal Emperor Shah Alam II. More militarily significant than Plassey — it proved EIC could defeat major South Asian powers combined.',
+    connection:'Followed by: Diwani grant of 1765.' },
+  { id:'diwani', term:'Diwani', lecture:'Lecture 22', tag:'L22',
+    def:'The right to collect land revenue in Bengal, Bihar, and Orissa, granted to the EIC by Mughal Emperor Shah Alam II in 1765. This transformed the EIC from a trading company into a territorial sovereign. Central to Travers\'s argument.',
+    connection:'Reading: Travers — Diwani (1765) marks the ideological shift from trade to territorial rule.' },
+  { id:'regulating-act', term:'Regulating Act (1773)', lecture:'Lecture 22', tag:'L22',
+    def:'British parliamentary legislation that began to bring the EIC under state oversight. Created the position of Governor-General (first: Warren Hastings) and a Supreme Court in Calcutta. Travers argues it represents the metropole\'s attempt to rein in nabob excess.',
+    connection:'Reading: Travers — tension between Company autonomy and parliamentary oversight.' },
+
+  // LECTURE 23 — Justifying Empire
+  { id:'cornwallis', term:'Charles Cornwallis', lecture:'Lecture 23', tag:'L23',
+    def:'Governor-General of Bengal (1786–1793) who introduced the Permanent Settlement (1793) fixing land revenue, and the Cornwallis Code that explicitly excluded Indians from senior Company positions — institutionalizing racial exclusion in colonial governance.',
+    connection:'Reading: Travers — Cornwallis represents the shift to explicit racial ideology in EIC rule.' },
+  { id:'tipu-sultan', term:'Tipu Sultan', lecture:'Lecture 23', tag:'L23',
+    def:'"Tiger of Mysore" (r.1782–1799) — the most formidable Indian opponent of British expansion. Allied with France, introduced rocket artillery, modernized Mysore\'s administration. Killed at Seringapatam (1799). His defeat secured British dominance of peninsular India.',
+    connection:'Reading: Travers — Tipu used as justification for conquest through "Asiatic despotism" framing.' },
+  { id:'mysore', term:'Mysore', lecture:'Lecture 23', tag:'L23',
+    def:'South Indian kingdom that became the leading opposition to British power under Hyder Ali and his son Tipu Sultan. Four Anglo-Mysore Wars (1767–1799); Mysore\'s defeat in 1799 opened the south to British dominance.',
+    connection:'Related to: Tipu Sultan, Cornwallis, Carnatic Wars.' },
+  { id:'company-bahadur', term:'Company Bahadur', lecture:'Lecture 23', tag:'L23',
+    def:'"Bahadur" means "brave/honorable" in Persian/Urdu. Indian populations came to call the EIC "Company Bahadur" — treating it as if it were a legitimate successor Indian ruler. Shows how the EIC performed Mughal sovereignty to legitimize its rule.',
+    connection:'Reading: Travers — EIC simultaneously othered and mimicked Mughal authority.' },
+  { id:'william-jones', term:'William Jones', lecture:'Lecture 23', tag:'L23',
+    def:'British judge and linguist stationed in Calcutta who founded the Asiatic Society of Bengal (1784). Recognized the relationship between Sanskrit and European languages (Indo-European family). His "orientalist" scholarship both respected and appropriated Indian knowledge to serve colonial administration.',
+    connection:'Connected to: Asiatic Society, orientalism, Travers\'s ideology argument.' },
+  { id:'orientalist', term:'Orientalist (in colonial context)', lecture:'Lecture 23', tag:'L23',
+    def:'In the EIC context: British scholars/administrators who believed Indian civilization had a great classical past (Sanskrit texts, Mughal law) and that colonial rule should govern Indians through their own traditions. Contested by "Anglicists" who wanted Western education.',
+    connection:'Reading: Travers — orientalism as one pole of colonial ideology.' },
+  { id:'asiatic-society', term:'Asiatic Society of Bengal', lecture:'Lecture 23', tag:'L23',
+    def:'Scholarly institution founded by William Jones in Calcutta (1784) to study Asian history, languages, and culture. Produced translations of Sanskrit texts, Persian histories — simultaneously advancing knowledge and producing the "India" that colonialism claimed to govern.',
+    connection:'Related to: William Jones, orientalism, colonial knowledge production.' },
+
+  // LECTURE 24 — Between Bihar and Cork
+  { id:'dean-mahomet', term:'Dean Mahomet', lecture:'Lecture 24', tag:'L24',
+    def:'Sake Dean Mahomed (1759–1851) — first published Indian author in English. Born in Patna, enlisted as a sepoy, emigrated to Ireland, published "The Travels of Dean Mahomet" (1794). Later opened Britain\'s first curry house and introduced "shampooing" (therapeutic massage) to Britain.',
+    connection:'Reading: Dean Mahomet Travels — first-person account of sepoy life and Indian diaspora.' },
+  { id:'sepoy', term:'Sepoy', lecture:'Lecture 24', tag:'L24',
+    def:'An Indian soldier employed by a European East India Company (from Persian/Urdu "sipahi," soldier). Sepoys formed the backbone of EIC armies; Dean Mahomet was a sepoy. The 1857 uprising ("Sepoy Mutiny"/First War of Independence) was led by them.',
+    connection:'Reading: Dean Mahomet Travels — sepoy\'s-eye view of EIC military expansion.' },
+  { id:'shampoo', term:'Shampoo', lecture:'Lecture 24', tag:'L24',
+    def:'From Hindi "champo" (to knead/massage). Dean Mahomet opened "Mahomed\'s Baths" in Brighton (1815), offering "shampooing" — Indian-style therapeutic massage. The word entered English via this contact. A vivid example of cultural exchange through empire.',
+    connection:'Illustrates: Indian diaspora, colonial entanglement, cultural borrowing.' },
+  { id:'lascar', term:'Lascar', lecture:'Lecture 24', tag:'L24',
+    def:'South Asian and East African sailors employed on European ships, especially EIC vessels. Lascars formed significant communities in British port cities (London, Liverpool). Their presence shows the human traffic of empire beyond soldiers and traders.',
+    connection:'Related to: Dean Mahomet, Indian Ocean trade, empire\'s human costs.' },
+];
+
+const READINGS = [
+  {
+    color: '#7c6af7',
+    label: 'Political/Ideological History',
+    title: 'Ideology and British Expansion in Bengal, 1757–72',
+    author: 'Robert Travers',
+    thesis: 'British expansion in Bengal was driven by a particular colonial ideology — "frontier patriotism" — not simply greed or accident. Company servants used the concept of "Asiatic despotism" both to justify conquest and to grapple with the legitimacy of Mughal authority.',
+    arguments: [
+      'Company servants developed a flexible "frontier patriotism" that valorized conquest and personal enrichment as service to Britain — making nabobs into heroes rather than criminals.',
+      'The EIC simultaneously framed Indian rulers as despotic/illegitimate AND used Mughal legitimacy (Diwani grant) to legitimize its own rule — a fundamental ideological contradiction.',
+      'The Diwani of 1765 (right to collect Bengal\'s land revenue) transformed the EIC from trader to territorial sovereign — the ideological and institutional pivot point.',
+      'The Regulating Act (1773) and Cornwallis reforms represented British attempts to create a more systematic, less personally corrupt colonial ideology — moving from "frontier" to "responsible" empire.',
+      '"Asiatic despotism" served as both a description of Indian rulers and a justification for their replacement — but the EIC itself became despotic in the same mode.',
+    ],
+    terms: ['diwani', 'nabob', 'robert-clive', 'mir-jafar', 'plassey', 'regulating-act', 'cornwallis', 'company-bahadur', 'siraj-ud-daulah'],
+    id: 'travers'
+  },
+  {
+    color: '#e87070',
+    label: 'Urban/Social History',
+    title: 'The Shoemakers\' Riot (ch. 7, The King and the People)',
+    author: 'Abhishek Kaicker',
+    thesis: 'Even the most marginal urban inhabitants — Muslim shoemakers — could invoke the Mughal discourse of justice ("king protects his people") to challenge authority. Politics in Mughal Delhi was not simply top-down: it was polyvocal, including voices from the margins (hashiya).',
+    arguments: [
+      'A 1729 riot by Muslim shoemakers in Delhi shows how lower-class urban workers used the language of Islamic sovereignty — the king\'s duty to provide justice — to make political claims.',
+      'Shoemakers occupied the lowest rung of urban society (both as artisans and as Muslims doing ritually polluting work) yet successfully mobilized collective action.',
+      'Kaicker uses the metaphor of the "hashiya" (marginal gloss) — subordinate voices are always present at the margins of Mughal political texts, even if they don\'t control the center.',
+      'Popular politics in Mughal Delhi had real limits: shoemakers could riot and be heard, but could not change the fundamental structure of authority.',
+      'The chapter shows that "the people" in Mughal political thought were not passive subjects but active (if constrained) participants in the political order.',
+    ],
+    terms: ['hashiya', 'diwani', 'nadir-shah'],
+    id: 'kaicker'
+  },
+  {
+    color: '#e8b86d',
+    label: 'Economic/Caste History',
+    title: 'Merchants of Virtue (Introduction)',
+    author: 'Divya Cherian',
+    thesis: 'In 18th-century Marwar, the rise of Jain and Vaishnava merchant castes through global trade connections led them to consolidate a "Hindu" identity specifically defined against Untouchable ("achhep") communities — showing that caste intensification was driven by capitalism, not timeless tradition.',
+    arguments: [
+      'Global trade (IOW connections) → Marwari merchant prosperity → merchants sought social prestige by tightening caste boundaries and aligning with Brahmin state power.',
+      'The category "Hindu" was actively constructed in this period as a high-caste identity, with Untouchables defined as outside that category.',
+      '"Achhep" (untouchable/impure) was the quintessential category that defined the bhangi/halalkhor as outside the social body — this was intensified, not inherited, in the 18th century.',
+      'The state, law, and administrative records (Sanad Parwana Bahis) were integral to producing and enforcing caste hierarchy — caste was not customary but juridical.',
+      'Merchant "virtue" (ahimsa, vegetarianism, devotion) was performed precisely as they engaged in caste violence — a constitutive hypocrisy.',
+    ],
+    terms: ['mahajan', 'jati', 'varna', 'dalit', 'ahimsa', 'vijai-singh', 'endogamy'],
+    id: 'cherian-mov'
+  },
+  {
+    color: '#e8b86d',
+    label: 'Gender/Caste/Legal History',
+    title: 'Stolen Skin and Children Thrown',
+    author: 'Divya Cherian',
+    thesis: 'Pre-colonial Marwar\'s state criminalized illicit sex and abortion among lower-caste women as a tool of caste discipline — women\'s bodies were the terrain on which caste hierarchy was enforced and reproduced. This demonstrates that caste was never simply "customary" but always administered.',
+    arguments: [
+      'As global capitalism elevated merchants and Brahmins in Marwar, they used state law to deny lower-caste women "sexual personhood" — the right to control their own bodies and reproduction.',
+      'The Jodhpur Sanad Parwana Bahis (administrative records) document cases of lower-caste women prosecuted for "illicit" sex, infanticide, or abortion — giving historians access to lives otherwise invisible.',
+      'Criminalization of inter-caste sex protected caste endogamy (Ambedkar\'s key mechanism) from below, while upper-caste men\'s access to lower-caste women\'s bodies was often unpunished.',
+      'Abortion was criminalized not for women\'s sake but because children carried their mothers\' caste status — killing a potential caste member threatened the group.',
+      'The Gulab Rai case exemplifies how a lower-caste woman\'s sexuality became a state matter — her body was the archive of caste anxiety.',
+    ],
+    terms: ['vijai-singh', 'gulab-rai', 'biopower', 'endogamy', 'dalit', 'ambedkar', 'mahajan'],
+    id: 'cherian-stolen'
+  },
+  {
+    color: '#5ec9a0',
+    label: 'Economic/Trade History',
+    title: 'The Indian Ocean Trade, 1500–1800 (ch. 4)',
+    author: 'Tirthankar Roy',
+    thesis: 'India was the geographic and commercial pivot of Indian Ocean World (IOW) trade, but this role shifted dramatically as the Portuguese Estado da India, then the Dutch VOC, then the British EIC progressively inserted European monopoly power into previously decentralized Asian trade networks.',
+    arguments: [
+      'India\'s geographical position made it a natural entrepôt — connecting the Red Sea/Persian Gulf (west) with Southeast Asia (east) and the subcontinent\'s own textile production.',
+      'The Portuguese Estado da India (16th c.) used violence and the cartaz (trading pass) system to extract tribute from Indian Ocean trade, but could not fully control it.',
+      'The Dutch VOC (17th c.) was more commercially sophisticated — used joint-stock capital and interport trade to outcompete both Portuguese and Indian merchants.',
+      'Key commodities: spices (Malabar pepper), textiles (Gujarat/Bengal cotton), pearls (Gulf of Mannar), diamonds (Deccan), cinnamon (Ceylon).',
+      'The shift from Asian-dominated trade to European-dominated trade happened gradually and unevenly — Indian merchants at Surat, Masulipatnam, and Calicut remained powerful well into the 18th century.',
+    ],
+    terms: ['voc', 'eic', 'pearls', 'cinnamon', 'colombo', 'joint-stock', 'pondicherry'],
+    id: 'roy'
+  },
+  {
+    color: '#5ec9a0',
+    label: 'Environmental/Imperial History',
+    title: 'Can the Oyster Speak? Pearl Fisheries and Empire',
+    author: 'Jennifer Ostroff',
+    thesis: 'The pearl fisheries of the Gulf of Mannar were not just economic resources but sites where imperial sovereignty itself was produced — and the oysters, as non-human actors shaping environmental conditions, were genuine historical agents, not mere backdrop.',
+    arguments: [
+      'The pearl fishery passed through successive imperial hands (Portuguese → VOC → EIC → British Crown) — each transfer represented a claim to sovereign authority over the marine environment.',
+      'Applying environmental history methodology: the oysters\' biological cycles (breeding seasons, population crashes) shaped when and whether the fishery operated — humans adapted to the oysters, not just the reverse.',
+      'The EIC\'s management of the fishery required scientific knowledge of marine biology — it had to learn from the oysters\' behavior, making the oysters active co-producers of imperial knowledge.',
+      '"Can the oyster speak?" — a riff on Spivak\'s "Can the Subaltern Speak?" — asks whether non-human actors can be historical agents. Ostroff argues yes: the oysters\' population collapses forced imperial renegotiation.',
+      'The fishery was also a labor site: Tamil diving communities had their own expertise and interests that colonial managers had to accommodate or coerce.',
+    ],
+    terms: ['pearls', 'palk-strait', 'gulf-mannar', 'ceylon', 'voc', 'eic', 'colombo', 'caste'],
+    id: 'ostroff'
+  },
+  {
+    color: '#60adf5',
+    label: 'Narrative History (Textbook)',
+    title: 'A Concise History of Modern India (excerpt)',
+    author: 'Barbara & Thomas Metcalf',
+    thesis: 'The EIC\'s transformation from trading company to territorial empire was neither inevitable nor purely about trade advantage — it emerged from specific contingent events (succession disputes, Black Hole, Plassey) shaped by both European rivalry and Indian political fragmentation.',
+    arguments: [
+      'EIC founded 1600 as a joint-stock company — emphasizes the commercial, not imperial, origins of British India.',
+      'French-British rivalry (Dupleix vs. EIC) was fought through Indian succession disputes — neither power could operate without Indian intermediaries and Indian politics.',
+      'The "Black Hole of Calcutta" (1756): Siraj ud-Daulah imprisons British prisoners; the story was exaggerated but used as propaganda justifying conquest.',
+      'Battle of Plassey (1757) was as much about Mir Jafar\'s treachery as military superiority — shows EIC relied on Indian collaboration to win.',
+      'The Diwani (1765) transformed the EIC into a revenue-collecting state — the moment commercial company became territorial empire.',
+    ],
+    terms: ['eic', 'plassey', 'diwani', 'siraj-ud-daulah', 'mir-jafar', 'joint-stock', 'dupleix', 'calcutta', 'regulating-act'],
+    id: 'metcalf'
+  },
+  {
+    color: '#d47ef5',
+    label: 'Biographical/Diaspora History',
+    title: 'The Travels of Dean Mahomet (excerpts)',
+    author: 'Dean Mahomet (Michael Fisher, ed.)',
+    thesis: 'Dean Mahomet\'s account of his life as a sepoy and his emigration to Ireland/Britain is the first published English-language narrative by an Indian author — it documents the human dimensions of empire from an Indian perspective, including the pleasures and costs of cross-cultural encounter.',
+    arguments: [
+      'Dean Mahomet enlisted as a sepoy camp follower and rose through EIC military ranks — his account gives a soldier\'s view of Company expansion in Bihar and Bengal.',
+      'He describes Indian landscape, customs, and people for a British readership, mediating between cultures in ways that both reinforced and challenged stereotypes.',
+      'His emigration to Ireland (following his Irish officer patron) and marriage to a European woman exemplify the intimate, personal entanglements of empire.',
+      '"Shampooing" — his later business in Brighton — shows how Indian practices entered British culture through diaspora, not just trade.',
+      'The text\'s epistolary form (letters) creates intimacy with the reader — a deliberate rhetorical choice to make an Indian voice legible and sympathetic to Europeans.',
+    ],
+    terms: ['dean-mahomet', 'sepoy', 'shampoo', 'lascar', 'eic', 'plassey'],
+    id: 'dean-mahomet'
+  },
+];
+
+const TIMELINE_EVENTS = [
+  { date: '1498', title: 'Vasco da Gama reaches India', desc: 'Portuguese navigator arrives at Calicut (Kozhikode), opening the Cape of Good Hope route to Asia. Beginning of the Estado da India.', tags: ['Portuguese', 'Trade'] },
+  { date: '1600', title: 'British East India Company founded', desc: 'Queen Elizabeth I charters the EIC as a joint-stock company for trade with Asia. Initially just a trading venture.', tags: ['EIC', 'Joint-Stock'] },
+  { date: '1602', title: 'Dutch VOC established', desc: 'The Vereenigde Oostindische Compagnie (VOC) is chartered — the world\'s first publicly traded joint-stock company, with quasi-governmental war-making powers.', tags: ['VOC', 'Dutch', 'Trade'] },
+  { date: '1636', title: 'Kingdom of Kandy resists Portuguese', desc: 'Sri Lankan highland kingdom successfully maintains independence against European coastal power — illustrating geographic limits of empire.', tags: ['Ceylon', 'Kandy', 'Resistance'] },
+  { date: '1639', title: 'EIC establishes Madras / Fort St. George', desc: 'The EIC begins fortifying its presence on the Coromandel Coast — one of the three presidency cities that become nodes of British power.', tags: ['EIC', 'Madras'] },
+  { date: '1658', title: 'Dutch VOC takes Colombo from Portuguese', desc: 'The VOC ousts the Portuguese from Colombo, gaining control of Ceylon\'s cinnamon trade and pearl fisheries.', tags: ['VOC', 'Ceylon', 'Cinnamon'] },
+  { date: '1688', title: 'Elihu Yale governs Madras', desc: 'Yale serves as EIC Governor of Madras, accumulating his fortune in the India trade before his donations found a famous university.', tags: ['EIC', 'Madras', 'Nabob'] },
+  { date: '1707', title: 'Death of Aurangzeb — Mughal decline begins', desc: 'The last great Mughal emperor dies without a stable succession plan. The subsequent succession wars begin the fragmentation of Mughal authority.', tags: ['Mughal', 'Decline'] },
+  { date: '1724', title: 'Nizams of Hyderabad break from Mughals', desc: 'Nizam-ul-Mulk Asaf Jah I establishes the effective independence of Hyderabad — first of the major successor states.', tags: ['Hyderabad', 'Successor States'] },
+  { date: '1729', title: 'Delhi Shoemakers\' Riot', desc: 'Muslim shoemakers riot in Delhi, invoking the Islamic discourse of royal justice. Kaicker\'s analysis: even the lowest subjects could make political claims within Mughal discourse.', tags: ['Delhi', 'Popular Politics', 'Kaicker'] },
+  { date: '1739', title: 'Nadir Shah sacks Delhi', desc: 'Persian emperor invades, massacres thousands, carries off the Peacock Throne and Koh-i-Noor diamond. Definitive blow to Mughal prestige.', tags: ['Nadir Shah', 'Mughal Decline', 'Peacock Throne'] },
+  { date: '1746–63', title: 'Carnatic Wars (French vs. British)', desc: 'Three wars on the Coromandel Coast. Dupleix\'s French strategy of backing Indian succession disputes is adopted and perfected by the British. British victory ends French territorial ambitions.', tags: ['Carnatic Wars', 'Dupleix', 'French'] },
+  { date: '1756', title: '"Black Hole of Calcutta"', desc: 'Siraj ud-Daulah captures British prisoners in Calcutta. Casualty figures inflated by British propaganda, but the episode justified subsequent conquest.', tags: ['Siraj ud-Daulah', 'Calcutta', 'EIC'] },
+  { date: '1757', title: 'Battle of Plassey', desc: 'Clive defeats Siraj ud-Daulah with Mir Jafar\'s pre-arranged betrayal. EIC installs Mir Jafar as Nawab. Often called the beginning of British territorial empire in India.', tags: ['Plassey', 'Clive', 'Mir Jafar', 'Bengal'] },
+  { date: '1764', title: 'Battle of Baksar', desc: 'EIC defeats coalition of Nawab of Awadh + Mir Qasim + Mughal Emperor. More significant than Plassey militarily — proves EIC can defeat South Asian coalitions.', tags: ['Baksar', 'EIC', 'Bengal'] },
+  { date: '1765', title: 'EIC receives the Diwani', desc: 'Mughal Emperor Shah Alam II grants EIC the right to collect land revenue in Bengal, Bihar, and Orissa. The company becomes a territorial state.', tags: ['Diwani', 'EIC', 'Travers'] },
+  { date: '1773', title: 'Regulating Act', desc: 'British Parliament begins oversight of EIC, creating Governor-General role. Travers: represents metropole\'s attempt to rein in frontier corruption and systematize colonial rule.', tags: ['Regulating Act', 'Parliament', 'Reform'] },
+  { date: '1784', title: 'Asiatic Society of Bengal founded', desc: 'William Jones establishes the institution for orientalist scholarship in Calcutta — Sanskrit, Persian, and Indian law studied in service of colonial governance.', tags: ['Orientalism', 'William Jones', 'Knowledge'] },
+  { date: '1793', title: 'Cornwallis Code & Permanent Settlement', desc: 'Cornwallis formally bars Indians from senior Company positions and fixes land revenue assessments. Institutionalizes racial exclusion in colonial administration.', tags: ['Cornwallis', 'Racial Policy', 'Bengal'] },
+  { date: '1794', title: 'Dean Mahomet publishes his Travels', desc: 'The first English-language book by an Indian author — an epistolary travel narrative by a former sepoy who had emigrated to Ireland.', tags: ['Dean Mahomet', 'Diaspora', 'Literature'] },
+  { date: '1799', title: 'Fall of Seringapatam — Tipu Sultan killed', desc: 'British forces under Arthur Wellesley storm Tipu\'s capital. With Mysore defeated, British dominance of peninsular India is secured.', tags: ['Tipu Sultan', 'Mysore', 'Conquest'] },
+  { date: '1815', title: 'Begum Samru reaches peak of power / British take Kandy', desc: 'Begum Samru rules Sardhana at peak of her power. Simultaneously, the British finally conquer the Kingdom of Kandy in Sri Lanka — ending the last independent state there.', tags: ['Begum Samru', 'Kandy', 'Ceylon'] },
+  { date: '1815', title: 'Dean Mahomet opens Mahomed\'s Baths, Brighton', desc: '"Shampooing" — Indian therapeutic massage — introduced to Britain by a former sepoy. One of many ways Indian practices entered British culture through empire.', tags: ['Dean Mahomet', 'Shampoo', 'Diaspora'] },
+];
+
+const QUIZ_QUESTIONS = [
+  {
+    q: 'What was the key argument of Robert Travers about British expansion in Bengal?',
+    options: ['The British conquered India purely for economic gain', 'A "frontier patriotism" ideology drove EIC expansion alongside "Asiatic despotism" framing', 'The British were invited by Indian rulers to establish order', 'Religion motivated the British to civilize India'],
+    correct: 1,
+    feedback: 'Travers argues that Company servants developed an ideology of "frontier patriotism" that celebrated conquest as service, while framing Indian rulers as "Asiatic despots" to justify their replacement — even as the EIC itself adopted Mughal legitimizing frameworks like the Diwani.'
+  },
+  {
+    q: 'What does the term "Diwani" (1765) refer to, and why is it historically significant?',
+    options: ['A Mughal festival; it marks the end of the monsoon season', 'The right to collect land revenue in Bengal — it transformed the EIC from trader to territorial ruler', 'A diplomatic treaty between EIC and the Nawab of Bengal', 'A Persian legal code adopted by the British'],
+    correct: 1,
+    feedback: 'The Diwani was the right to collect land revenue from Bengal, Bihar, and Orissa, granted by Mughal Emperor Shah Alam II in 1765. This made the EIC a territorial sovereign — the turning point from commercial to imperial company. Both Travers and Metcalf & Metcalf identify this as the key moment.'
+  },
+  {
+    q: 'Abhishek Kaicker\'s analysis of the 1729 Delhi shoemakers\' riot argues that:',
+    options: ['Lower-caste Hindus had no political voice in Mughal Delhi', 'Even the most marginal urban inhabitants could invoke Mughal political discourse to challenge authority', 'The riot was caused by French intervention in Indian politics', 'Shoemakers successfully overthrew their local ruler'],
+    correct: 1,
+    feedback: 'Kaicker shows that Muslim shoemakers — among Delhi\'s lowest urban inhabitants — could invoke Islamic sovereignty language (the king\'s duty to provide justice) to make political claims. The "hashiya" metaphor suggests their voices were always present at the margins of Mughal political life, even if not dominant.'
+  },
+  {
+    q: 'Divya Cherian\'s "Merchants of Virtue" argues that caste intensification in 18th-century Marwar was primarily driven by:',
+    options: ['Religious reform movements led by Brahmin priests', 'Global trade capitalism enabling merchant caste rise, which then tightened caste boundaries against Untouchables', 'British colonial administrators who invented the caste system', 'Natural disasters that disrupted traditional social hierarchies'],
+    correct: 1,
+    feedback: 'Cherian shows that global trade → Marwari merchant (mahajan) prosperity → merchants sought social prestige by constructing a "Hindu" identity defined against Untouchable (achhep) communities. Capitalism drove caste polarization — caste was made, not inherited.'
+  },
+  {
+    q: 'What does Jennifer Ostroff mean when she asks "Can the Oyster Speak?"',
+    options: ['She is studying the linguistics of pearl divers', 'She argues oysters had no historical agency and were purely passive resources', 'She asks whether non-human actors (oysters\' biological cycles) were genuine historical agents shaping imperial history', 'She is analyzing how British propaganda portrayed Indian fishermen'],
+    correct: 2,
+    feedback: 'Ostroff\'s title riffs on Spivak\'s "Can the Subaltern Speak?" to ask whether non-human actors can be historical agents. She argues yes: the oysters\' population cycles forced imperial administrators to adapt, making the oysters co-producers of colonial knowledge and co-shapers of sovereignty.'
+  },
+  {
+    q: 'The Battle of Plassey (1757) was decisive largely because of:',
+    options: ['British technological superiority over Indian forces', 'The treachery of Mir Jafar, who had pre-arranged his betrayal of Siraj ud-Daulah with Clive', 'French military assistance to the EIC', 'A spontaneous mutiny within Siraj ud-Daulah\'s army'],
+    correct: 1,
+    feedback: 'While the British had military advantages, Plassey was decided largely by the pre-arranged betrayal of Mir Jafar, Siraj ud-Daulah\'s general, who held his forces back during the battle. Both Metcalf & Metcalf and Travers emphasize this — the EIC\'s victories required Indian collaboration.'
+  },
+  {
+    q: 'B.R. Ambedkar\'s key argument about caste, referenced in Lecture 18, was that:',
+    options: ['Caste was an economic system based on occupation', 'Caste was maintained through endogamy (controlled marriage), enforced on women\'s bodies', 'Caste was invented by British colonial administrators', 'Caste was primarily a religious phenomenon with no legal dimension'],
+    correct: 1,
+    feedback: 'Ambedkar\'s "Castes in India" (1916) argues that the defining feature of caste is endogamy — marrying within the group — and that this is enforced most brutally through control of women\'s sexuality and reproduction. Untouchability is the ultimate product of this system. Cherian builds directly on this in "Stolen Skin."'
+  },
+  {
+    q: 'The term "nabob" refers to:',
+    options: ['An Indian ruler appointed by the Mughals', 'A British person who returned from India with wealth made through Company exploitation', 'A French diplomat stationed in Pondichéry', 'A Tamil pearl diver who worked for the VOC'],
+    correct: 1,
+    feedback: '"Nabob" is an Anglicization of "Nawab" (Mughal provincial governor), used mockingly for Britons who returned from India enormously wealthy. The nabob became a symbol of corrupt, ill-gotten Eastern wealth in 18th-century British politics. Robert Clive was the archetypal nabob.'
+  },
+  {
+    q: 'Dean Mahomet\'s significance in Lecture 24 is primarily that:',
+    options: ['He was the most famous sepoy general in the EIC army', 'He was the first Indian author to publish in English, and his life traces Indian diaspora through empire', 'He was an Irish merchant who traded in India', 'He founded the first Indian community organization in Britain'],
+    correct: 1,
+    feedback: 'Dean Mahomet (1759–1851) was a former sepoy who emigrated to Ireland, published "The Travels of Dean Mahomet" (1794) — the first English-language book by an Indian author — and later introduced "shampooing" (Indian therapeutic massage) to Britain. His life traces the human dimensions of empire.'
+  },
+  {
+    q: 'Tirthankar Roy\'s argument about the Indian Ocean World trade (1500–1800) is that:',
+    options: ['India was a peripheral player, dominated entirely by European trade', 'India was the geographic pivot of IOW trade, but this role shifted as European powers imposed monopoly control', 'Indian merchants were the dominant force throughout this period', 'The IOW trade was primarily about the slave trade between Africa and Asia'],
+    correct: 1,
+    feedback: 'Roy argues India\'s geographic position made it the natural entrepôt of IOW trade. But the Portuguese Estado da India, then VOC, then EIC progressively inserted European monopoly power into previously decentralized Asian networks. Indian merchants at Surat and Calicut remained powerful but faced mounting European competition.'
+  },
+  {
+    q: 'What was the VOC (Dutch East India Company)?',
+    options: ['The Portuguese trading monopoly in the Indian Ocean', 'The world\'s first joint-stock company, with quasi-governmental powers to wage war and make treaties', 'A British private trading company operating in the Spice Islands', 'A Mughal-chartered company for overland trade with Central Asia'],
+    correct: 1,
+    feedback: 'The Vereenigde Oostindische Compagnie (VOC), established 1602, was the world\'s first publicly traded joint-stock company. It had quasi-governmental powers — it could wage war, establish colonies, and make treaties. It succeeded the Portuguese Estado da India in dominating Asian trade in the 17th century.'
+  },
+  {
+    q: 'Joseph-François Dupleix\'s strategy in the Carnatic Wars was:',
+    options: ['Direct military confrontation with British forces at sea', 'Backing Indian candidates in succession disputes in exchange for territorial concessions', 'Economic sanctions against British traders on the Coromandel Coast', 'Forming an alliance with the Mughal Emperor against the British'],
+    correct: 1,
+    feedback: 'Dupleix innovated the strategy of intervening in Indian succession disputes — placing French-backed candidates on thrones in exchange for territorial concessions. The British adopted and perfected this strategy, using it to devastating effect in Bengal (backing Mir Jafar) and elsewhere.'
+  },
+  {
+    q: 'The "hashiya" in Kaicker\'s argument symbolizes:',
+    options: ['A type of Mughal battle formation', 'The marginal voices of subordinate groups present at the edges of Mughal political life', 'A legal document granting revenue rights', 'A form of Islamic prayer used to mobilize rioters'],
+    correct: 1,
+    feedback: '"Hashiya" means marginal gloss — the annotations in the margins of manuscripts. Kaicker uses it metaphorically: just as manuscript margins contain supplementary voices, urban subordinates (like shoemakers) were always present at the margins of Mughal political discourse, even when not controlling it.'
+  },
+  {
+    q: 'The difference between varna and jati is:',
+    options: ['Varna is a regional term for caste; jati is a Sanskrit term', 'Varna is the classical four-tier ritual hierarchy; jati is the lived endogamous group in practice', 'Varna is modern; jati is ancient', 'They are synonyms for the same social institution'],
+    correct: 1,
+    feedback: 'Varna is the classical textual hierarchy of four categories (Brahmin, Kshatriya, Vaishya, Shudra). Jati is the practical, lived unit — the thousands of endogamous kinship groups. Jatis are loosely organized under varna categories, but the jati is what actually regulates marriage and social interaction.'
+  },
+  {
+    q: 'Nadir Shah\'s invasion of Delhi in 1739 is historically significant primarily because:',
+    options: ['It brought Islam to India for the first time', 'It symbolized and accelerated Mughal imperial collapse — he carried off the Peacock Throne and Koh-i-Noor', 'It began the British period of Indian history', 'It ended the Carnatic Wars between France and Britain'],
+    correct: 1,
+    feedback: 'Nadir Shah\'s 1739 sack of Delhi — in which he massacred tens of thousands and carried off the Peacock Throne (with the Koh-i-Noor) — delivered a catastrophic blow to Mughal imperial prestige and resources. It is a definitive turning point in 18th-century Indian history, accelerating the fragmentation into regional successor states.'
+  },
+];
+
+// ════════════════════════════════════════════════════════
+// FLASHCARD LOGIC
+// ════════════════════════════════════════════════════════
+let allCards = [...CARDS];
+let filteredCards = [...CARDS];
+let currentCard = 0;
+let isFlipped = false;
+
+function filterCards(tag, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filteredCards = tag === 'all' ? [...CARDS] : CARDS.filter(c => c.tag === tag);
+  currentCard = 0;
+  isFlipped = false;
+  document.getElementById('fc-scene').classList.remove('flipped');
+  renderCard();
+}
+
+function renderCard() {
+  if (!filteredCards.length) return;
+  const c = filteredCards[currentCard];
+  document.getElementById('fc-term').textContent = c.term;
+  document.getElementById('fc-lecture').textContent = c.lecture;
+  document.getElementById('fc-def').textContent = c.def;
+  document.getElementById('fc-connection').textContent = c.connection || '';
+  document.getElementById('fc-counter').textContent = `${currentCard + 1} / ${filteredCards.length}`;
+  document.getElementById('fc-progress').textContent = `${filteredCards.length} cards`;
+}
+
+function flipCard() {
+  isFlipped = !isFlipped;
+  document.getElementById('fc-scene').classList.toggle('flipped', isFlipped);
+}
+
+function nextCard() {
+  currentCard = (currentCard + 1) % filteredCards.length;
+  isFlipped = false;
+  document.getElementById('fc-scene').classList.remove('flipped');
+  renderCard();
+}
+
+function prevCard() {
+  currentCard = (currentCard - 1 + filteredCards.length) % filteredCards.length;
+  isFlipped = false;
+  document.getElementById('fc-scene').classList.remove('flipped');
+  renderCard();
+}
+
+document.addEventListener('keydown', e => {
+  if (document.getElementById('flashcards').classList.contains('active')) {
+    if (e.key === 'ArrowRight') nextCard();
+    if (e.key === 'ArrowLeft') prevCard();
+    if (e.key === ' ') { e.preventDefault(); flipCard(); }
+  }
+});
+
+// ════════════════════════════════════════════════════════
+// READINGS LOGIC
+// ════════════════════════════════════════════════════════
+function buildReadings() {
+  const grid = document.getElementById('readings-grid');
+  grid.innerHTML = READINGS.map((r, i) => `
+    <div class="reading-card" id="rc-${i}" onclick="toggleReading(${i})">
+      <div class="rc-label" style="color:${r.color}">${r.label}</div>
+      <div class="rc-title">${r.title}</div>
+      <div class="rc-author">${r.author}</div>
+      <div class="rc-thesis">${r.thesis}</div>
+      <div class="rc-arguments">
+        <h4>Main Arguments</h4>
+        <ul>${r.arguments.map(a => `<li>${a}</li>`).join('')}</ul>
+        <div class="rc-terms">
+          ${r.terms.map(t => {
+            const card = CARDS.find(c => c.id === t);
+            return card ? `<span class="rc-term-tag" onclick="jumpToTerm('${t}', event)">${card.term}</span>` : '';
+          }).join('')}
+        </div>
+      </div>
+      <div class="expand-hint" id="hint-${i}">Click to expand →</div>
+    </div>
+  `).join('');
+}
+
+function toggleReading(i) {
+  const card = document.getElementById(`rc-${i}`);
+  const hint = document.getElementById(`hint-${i}`);
+  card.classList.toggle('expanded');
+  hint.textContent = card.classList.contains('expanded') ? '↑ Collapse' : 'Click to expand →';
+}
+
+function searchReadings() {
+  const q = document.getElementById('reading-search').value.toLowerCase();
+  document.querySelectorAll('.reading-card').forEach((el, i) => {
+    const r = READINGS[i];
+    const text = [r.title, r.author, r.thesis, ...r.arguments].join(' ').toLowerCase();
+    el.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+function jumpToTerm(termId, e) {
+  e.stopPropagation();
+  showSection('flashcards');
+  filterCards('all', document.querySelector('.filter-btn'));
+  const idx = filteredCards.findIndex(c => c.id === termId);
+  if (idx !== -1) {
+    currentCard = idx;
+    isFlipped = false;
+    document.getElementById('fc-scene').classList.remove('flipped');
+    renderCard();
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// MIND MAP (interactive, data-driven)
+// ════════════════════════════════════════════════════════
+const _MM_NODES_LEGACY = {
+  all: [
+    { id:'c1', x:450, y:280, label:'Early Modern India\n1500–1800', r:48, color:'#7c6af7', type:'center' },
+    { id:'empire', x:700, y:140, label:'Empire &\nConquest', r:36, color:'#e8b86d', type:'theme' },
+    { id:'caste', x:200, y:140, label:'Caste &\nSociety', r:36, color:'#e87070', type:'theme' },
+    { id:'trade', x:200, y:420, label:'Trade &\nOcean', r:36, color:'#5ec9a0', type:'theme' },
+    { id:'mughal', x:700, y:420, label:'Mughal\nDecline', r:36, color:'#60adf5', type:'theme' },
+    { id:'culture', x:450, y:80, label:'Culture &\nIdentity', r:32, color:'#d47ef5', type:'theme' },
+    // Readings
+    { id:'travers', x:820, y:100, label:'Travers', r:28, color:'#e8b86d', type:'reading' },
+    { id:'metcalf', x:810, y:220, label:'Metcalf', r:28, color:'#e8b86d', type:'reading' },
+    { id:'kaicker', x:100, y:100, label:'Kaicker', r:28, color:'#e87070', type:'reading' },
+    { id:'cherian', x:80, y:200, label:'Cherian', r:28, color:'#e87070', type:'reading' },
+    { id:'ostroff', x:80, y:460, label:'Ostroff', r:28, color:'#5ec9a0', type:'reading' },
+    { id:'roy', x:120, y:360, label:'Roy', r:28, color:'#5ec9a0', type:'reading' },
+    { id:'deanm', x:550, y:80, label:'Dean\nMahomet', r:28, color:'#d47ef5', type:'reading' },
+    // Key vocab
+    { id:'v-plassey', x:760, y:300, label:'Battle of\nPlassey', r:22, color:'#7c6af7', type:'vocab' },
+    { id:'v-diwani', x:850, y:350, label:'Diwani', r:22, color:'#7c6af7', type:'vocab' },
+    { id:'v-jati', x:160, y:220, label:'Jati', r:22, color:'#e87070', type:'vocab' },
+    { id:'v-dalit', x:100, y:300, label:'Dalit', r:22, color:'#e87070', type:'vocab' },
+    { id:'v-pearls', x:100, y:520, label:'Pearls', r:22, color:'#5ec9a0', type:'vocab' },
+    { id:'v-voc', x:200, y:520, label:'VOC', r:22, color:'#5ec9a0', type:'vocab' },
+    { id:'v-peacock', x:680, y:500, label:'Peacock\nThrone', r:22, color:'#60adf5', type:'vocab' },
+    { id:'v-nadir', x:800, y:480, label:'Nadir Shah', r:22, color:'#60adf5', type:'vocab' },
+    { id:'v-hashiya', x:370, y:80, label:'Hashiya', r:22, color:'#d47ef5', type:'vocab' },
+    { id:'v-sepoy', x:560, y:160, label:'Sepoy', r:22, color:'#d47ef5', type:'vocab' },
+  ],
+  empire: [
+    { id:'c1', x:450, y:280, label:'Empire &\nConquest', r:44, color:'#e8b86d', type:'center' },
+    { id:'travers', x:650, y:150, label:'Travers', r:32, color:'#e8b86d', type:'reading' },
+    { id:'metcalf', x:700, y:320, label:'Metcalf', r:32, color:'#e8b86d', type:'reading' },
+    { id:'deanm', x:250, y:150, label:'Dean Mahomet', r:30, color:'#d47ef5', type:'reading' },
+    { id:'v-plassey', x:600, y:420, label:'Battle of Plassey', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-diwani', x:780, y:200, label:'Diwani', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-eic', x:300, y:350, label:'EIC', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-nabob', x:200, y:420, label:'Nabob', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-clive', x:450, y:450, label:'Robert Clive', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-tipu', x:140, y:260, label:'Tipu Sultan', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-cornwallis', x:780, y:420, label:'Cornwallis', r:24, color:'#7c6af7', type:'vocab' },
+    { id:'v-regact', x:650, y:480, label:'Regulating Act', r:22, color:'#7c6af7', type:'vocab' },
+  ],
+  caste: [
+    { id:'c1', x:450, y:280, label:'Caste &\nSociety', r:44, color:'#e87070', type:'center' },
+    { id:'cherian', x:220, y:150, label:'Cherian\n(Merchants of Virtue)', r:34, color:'#e87070', type:'reading' },
+    { id:'cherian2', x:680, y:150, label:'Cherian\n(Stolen Skin)', r:34, color:'#e87070', type:'reading' },
+    { id:'kaicker', x:450, y:100, label:'Kaicker', r:30, color:'#e87070', type:'reading' },
+    { id:'v-jati', x:200, y:320, label:'Jati', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-varna', x:130, y:220, label:'Varna', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-dalit', x:200, y:430, label:'Dalit', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-ambedkar', x:350, y:450, label:'Ambedkar', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-mahajan', x:700, y:320, label:'Mahajan', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-endogamy', x:770, y:430, label:'Endogamy', r:24, color:'#7c6af7', type:'vocab' },
+    { id:'v-ahimsa', x:600, y:450, label:'Ahimsa', r:24, color:'#7c6af7', type:'vocab' },
+    { id:'v-biopower', x:450, y:470, label:'Biopower', r:24, color:'#7c6af7', type:'vocab' },
+    { id:'v-hashiya', x:450, y:160, label:'Hashiya', r:22, color:'#d47ef5', type:'vocab' },
+  ],
+  trade: [
+    { id:'c1', x:450, y:280, label:'Indian Ocean\nTrade', r:44, color:'#5ec9a0', type:'center' },
+    { id:'roy', x:220, y:150, label:'Roy (IOW)', r:32, color:'#5ec9a0', type:'reading' },
+    { id:'ostroff', x:680, y:150, label:'Ostroff\n(Oyster)', r:32, color:'#5ec9a0', type:'reading' },
+    { id:'metcalf', x:450, y:100, label:'Metcalf', r:28, color:'#e8b86d', type:'reading' },
+    { id:'v-voc', x:180, y:310, label:'VOC', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-eic', x:150, y:420, label:'EIC', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-pearls', x:720, y:310, label:'Pearls', r:26, color:'#7c6af7', type:'vocab' },
+    { id:'v-gulf', x:750, y:420, label:'Gulf of Mannar', r:24, color:'#7c6af7', type:'vocab' },
+    { id:'v-cinnamon', x:600, y:450, label:'Cinnamon', r:24, color:'#7c6af7', type:'vocab' },
+    { id:'v-estado', x:300, y:450, label:'Estado da India\n(Portuguese)', r:24, color:'#7c6af7', type:'vocab' },
+    { id:'v-surat', x:350, y:200, label:'Surat / Indian\nMerchants', r:22, color:'#5ec9a0', type:'vocab' },
+    { id:'v-ceylon', x:550, y:180, label:'Ceylon', r:22, color:'#7c6af7', type:'vocab' },
+    { id:'v-joint', x:450, y:450, label:'Joint-Stock\nCompany', r:22, color:'#7c6af7', type:'vocab' },
+  ],
+  mughal: [
+    { id:'c1', x:450, y:280, label:'Mughal\nDecline', r:44, color:'#60adf5', type:'center' },
+    { id:'kaicker', x:220, y:150, label:'Kaicker\n(Shoemakers)', r:32, color:'#e87070', type:'reading' },
+    { id:'travers', x:680, y:150, label:'Travers', r:30, color:'#e8b86d', type:'reading' },
+    { id:'v-nadir', x:200, y:300, label:'Nadir Shah\n(1739)', r:26, color:'#60adf5', type:'vocab' },
+    { id:'v-peacock', x:150, y:420, label:'Peacock Throne', r:26, color:'#60adf5', type:'vocab' },
+    { id:'v-koh', x:300, y:460, label:'Koh-i-Noor', r:24, color:'#60adf5', type:'vocab' },
+    { id:'v-successor', x:720, y:300, label:'Successor States\n(Hyderabad, Awadh)', r:26, color:'#60adf5', type:'vocab' },
+    { id:'v-peshwa', x:760, y:420, label:'Brahmin\nPeshwas', r:24, color:'#60adf5', type:'vocab' },
+    { id:'v-sauda', x:450, y:150, label:'Sauda\n(Urdu poetry)', r:24, color:'#d47ef5', type:'vocab' },
+    { id:'v-diwani', x:450, y:450, label:'Diwani → EIC\nfills vacuum', r:24, color:'#e8b86d', type:'vocab' },
+    { id:'v-delhi', x:350, y:350, label:'Delhi (1729\nRiot)', r:22, color:'#e87070', type:'vocab' },
+  ],
+  culture: [
+    { id:'c1', x:450, y:280, label:'Culture &\nIdentity', r:44, color:'#d47ef5', type:'center' },
+    { id:'kaicker', x:200, y:160, label:'Kaicker\n(Shoemakers)', r:30, color:'#e87070', type:'reading' },
+    { id:'deanm', x:700, y:160, label:'Dean Mahomet', r:30, color:'#d47ef5', type:'reading' },
+    { id:'cherian', x:450, y:100, label:'Cherian\n(Merchants)', r:28, color:'#e87070', type:'reading' },
+    { id:'v-hashiya', x:170, y:290, label:'Hashiya', r:26, color:'#d47ef5', type:'vocab' },
+    { id:'v-rekhta', x:160, y:400, label:'Rekhta\n(Urdu poetry)', r:24, color:'#d47ef5', type:'vocab' },
+    { id:'v-sauda', x:270, y:460, label:'Sauda', r:24, color:'#d47ef5', type:'vocab' },
+    { id:'v-begum', x:730, y:290, label:'Begum Samru', r:26, color:'#d47ef5', type:'vocab' },
+    { id:'v-orientalism', x:740, y:400, label:'Orientalism\n(Jones)', r:24, color:'#7c6af7', type:'vocab' },
+    { id:'v-sepoy', x:620, y:460, label:'Sepoy /\nDean Mahomet', r:24, color:'#d47ef5', type:'vocab' },
+    { id:'v-shampoo', x:450, y:470, label:'Shampoo\n(cultural exchange)', r:22, color:'#d47ef5', type:'vocab' },
+    { id:'v-jones', x:580, y:160, label:'William Jones', r:24, color:'#7c6af7', type:'vocab' },
+  ],
+};
+
+// ── Reading nodes: 8 authors arranged clockwise from top ──
+// angle in SVG coords (0=right, 90=down). Center=(290,260), R_read=155, R_vocab=235
+const MM_CX = 290, MM_CY = 260, MM_R = 155, MM_VR = 235;
+
+const MM_RDEFS = [
+  { key:'travers',      angle:270, label:'Travers',            ri:0, color:'#e8b86d',
+    svocab:['diwani','nabob','plassey','cornwallis'],
+    themes:['empire','mughal'] },
+  { key:'kaicker',      angle:315, label:'Kaicker',            ri:1, color:'#e87070',
+    svocab:['hashiya','nadir-shah','siraj-ud-daulah'],
+    themes:['culture','mughal'] },
+  { key:'cherian-mov',  angle:0,   label:'Cherian\n(MoV)',     ri:2, color:'#e87070',
+    svocab:['mahajan','jati','ahimsa','dalit'],
+    themes:['caste'] },
+  { key:'cherian-stl',  angle:45,  label:'Cherian\n(Stolen)',  ri:3, color:'#e87070',
+    svocab:['gulab-rai','endogamy','biopower','vijai-singh'],
+    themes:['caste'] },
+  { key:'roy',          angle:90,  label:'Roy',                ri:4, color:'#5ec9a0',
+    svocab:['voc','cinnamon','joint-stock'],
+    themes:['trade'] },
+  { key:'ostroff',      angle:135, label:'Ostroff',            ri:5, color:'#5ec9a0',
+    svocab:['pearls','gulf-mannar','ceylon','palk-strait'],
+    themes:['trade'] },
+  { key:'metcalf',      angle:180, label:'Metcalf',            ri:6, color:'#60adf5',
+    svocab:['eic','mir-jafar','calcutta','regulating-act'],
+    themes:['empire','mughal','trade'] },
+  { key:'dean-mahomet', angle:225, label:'Dean\nMahomet',      ri:7, color:'#d47ef5',
+    svocab:['dean-mahomet','sepoy','shampoo','lascar'],
+    themes:['culture','empire'] },
+];
+
+// Thematic connections drawn between readings (dashed lines)
+const MM_RLINKS = [
+  ['travers','metcalf'],
+  ['travers','kaicker'],
+  ['cherian-mov','cherian-stl'],
+  ['roy','ostroff'],
+  ['ostroff','metcalf'],
+  ['kaicker','cherian-mov'],
+  ['travers','dean-mahomet'],
+  ['roy','metcalf'],
+];
+
+const MM_THEME_KEYS = {
+  all:    MM_RDEFS.map(r=>r.key),
+  empire: ['travers','metcalf','dean-mahomet','kaicker'],
+  caste:  ['cherian-mov','cherian-stl','kaicker'],
+  trade:  ['roy','ostroff','metcalf'],
+  mughal: ['kaicker','travers','metcalf'],
+  culture:['kaicker','dean-mahomet','cherian-mov'],
+};
+
+function mmRad(deg){ return deg * Math.PI / 180; }
+function mmXY(angle, r){ return { x: Math.round(MM_CX + r*Math.cos(mmRad(angle))), y: Math.round(MM_CY + r*Math.sin(mmRad(angle))) }; }
+
+// Pre-compute reading positions
+MM_RDEFS.forEach(n => { const p = mmXY(n.angle, MM_R); n.x=p.x; n.y=p.y; });
+
+// Pre-compute vocab positions (fan out from reading angle)
+const MM_VOCAB_POS = {};
+const MM_VOCAB_EDGES = []; // {rkey, termId}
+
+MM_RDEFS.forEach(rn => {
+  const count = rn.svocab.length;
+  const spread = count <= 3 ? 22 : 18;
+  rn.svocab.forEach((termId, i) => {
+    const offset = (i - (count-1)/2) * spread;
+    const p = mmXY(rn.angle + offset, MM_VR);
+    if (!MM_VOCAB_POS[termId]) MM_VOCAB_POS[termId] = { x:p.x, y:p.y };
+    MM_VOCAB_EDGES.push({ rkey: rn.key, termId });
+  });
+});
+
+let mmTheme = 'all';
+let mmSelected = null;
+
+function mmSetTheme(theme, btn) {
+  document.querySelectorAll('.mm-flt').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  mmTheme = theme;
+  mmRender();
+}
+
+function mmLabel(term) {
+  if (term.length <= 11) return [term];
+  const words = term.split(' ');
+  if (words.length === 1) return [term.slice(0,10)+'…'];
+  if (words.length === 2) return words;
+  const mid = Math.ceil(words.length/2);
+  return [words.slice(0,mid).join(' '), words.slice(mid).join(' ')];
+}
+
+function mmRender() {
+  const svg = document.getElementById('mm-svg');
+  const active = new Set(MM_THEME_KEYS[mmTheme] || MM_THEME_KEYS.all);
+  const activeVocab = new Set();
+  MM_RDEFS.filter(r => active.has(r.key)).forEach(r => r.svocab.forEach(t => activeVocab.add(t)));
+
+  let h = `<defs>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+
+  // 1. Reading↔reading thematic links (dashed)
+  MM_RLINKS.forEach(([a,b]) => {
+    const ra = MM_RDEFS.find(r=>r.key===a), rb = MM_RDEFS.find(r=>r.key===b);
+    if (!ra||!rb||!active.has(a)||!active.has(b)) return;
+    h += `<line x1="${ra.x}" y1="${ra.y}" x2="${rb.x}" y2="${rb.y}" stroke="#5ec9a0" stroke-width="1.2" stroke-opacity="0.28" stroke-dasharray="5,4"/>`;
+  });
+
+  // 2. Reading→vocab edges
+  MM_VOCAB_EDGES.forEach(({rkey, termId}) => {
+    if (!active.has(rkey)||!activeVocab.has(termId)) return;
+    const rn = MM_RDEFS.find(r=>r.key===rkey);
+    const vp = MM_VOCAB_POS[termId];
+    if (!rn||!vp) return;
+    const isSelR = mmSelected===rkey, isSelV = mmSelected===termId;
+    const op = (isSelR||isSelV) ? 0.85 : 0.3;
+    h += `<line x1="${rn.x}" y1="${rn.y}" x2="${vp.x}" y2="${vp.y}" stroke="${rn.color}" stroke-width="${isSelR||isSelV?1.8:1}" stroke-opacity="${op}"/>`;
+  });
+
+  // 3. Vocab nodes
+  activeVocab.forEach(termId => {
+    const vp = MM_VOCAB_POS[termId];
+    const card = CARDS.find(c=>c.id===termId);
+    if (!vp||!card) return;
+    const isSel = mmSelected===termId;
+    const lines = mmLabel(card.term);
+    h += `<g style="cursor:pointer" onclick="mmClickVocab('${termId}')">
+      <circle cx="${vp.x}" cy="${vp.y}" r="${isSel?26:21}" fill="#7c6af7" fill-opacity="${isSel?0.3:0.12}" stroke="#a99ffa" stroke-width="${isSel?2:1.2}" ${isSel?'filter="url(#glow)"':''}/>
+      ${lines.map((ln,i)=>`<text x="${vp.x}" y="${vp.y+(i-(lines.length-1)/2)*11}" dominant-baseline="middle" text-anchor="middle" fill="#c4bfff" font-size="8.5" font-weight="600">${ln}</text>`).join('')}
+    </g>`;
+  });
+
+  // 4. Reading nodes (on top)
+  MM_RDEFS.forEach(rn => {
+    if (!active.has(rn.key)) return;
+    const isSel = mmSelected===rn.key;
+    const lines = rn.label.split('\n');
+    h += `<g style="cursor:pointer" onclick="mmClickReading('${rn.key}')">
+      <circle cx="${rn.x}" cy="${rn.y}" r="${isSel?42:36}" fill="${rn.color}" fill-opacity="${isSel?0.35:0.17}" stroke="${rn.color}" stroke-width="${isSel?2.8:1.8}" ${isSel?'filter="url(#glow)"':''}/>
+      ${lines.map((ln,i)=>`<text x="${rn.x}" y="${rn.y+(i-(lines.length-1)/2)*13}" dominant-baseline="middle" text-anchor="middle" fill="${rn.color}" font-size="10.5" font-weight="700">${ln}</text>`).join('')}
+    </g>`;
+  });
+
+  svg.innerHTML = h;
+}
+
+function mmClickReading(key) {
+  mmSelected = key;
+  mmRender();
+  const rn = MM_RDEFS.find(r=>r.key===key);
+  const reading = READINGS[rn.ri];
+
+  const termChips = reading.terms.map(t => {
+    const c = CARDS.find(x=>x.id===t);
+    return c ? `<span class="mm-chip" onclick="mmClickVocab('${t}')">${c.term}</span>` : '';
+  }).join('');
+
+  const relLinks = MM_RLINKS
+    .filter(([a,b])=>a===key||b===key)
+    .map(([a,b])=>{ const ok=a===key?b:a; const r=MM_RDEFS.find(x=>x.key===ok);
+      return r?`<span class="mm-chip rchip" onclick="mmClickReading('${r.key}')">${r.label.replace('\n',' ')}</span>`:''; })
+    .join('');
+
+  document.getElementById('mm-detail').innerHTML = `
+    <div class="mm-detail-cat" style="color:${rn.color}">${reading.label}</div>
+    <div class="mm-detail-title">${reading.title}</div>
+    <div class="mm-detail-sub">${reading.author}</div>
+    <div class="mm-detail-thesis">${reading.thesis}</div>
+    <div class="mm-section-label">Key Arguments</div>
+    <ul class="mm-args">${reading.arguments.map(a=>`<li>${a}</li>`).join('')}</ul>
+    <div class="mm-section-label">Flashcard Terms</div>
+    <div class="mm-chips">${termChips}</div>
+    ${relLinks?`<div class="mm-section-label">Thematically Linked Readings</div><div class="mm-chips">${relLinks}</div>`:''}
+  `;
+}
+
+function mmClickVocab(termId) {
+  mmSelected = termId;
+  mmRender();
+  const card = CARDS.find(c=>c.id===termId);
+  if (!card) return;
+
+  const relReadings = MM_RDEFS.filter(r=>r.svocab.includes(termId)||READINGS[r.ri].terms.includes(termId));
+  const rChips = relReadings.map(r=>`<span class="mm-chip rchip" onclick="mmClickReading('${r.key}')">${r.label.replace('\n',' ')}</span>`).join('');
+
+  document.getElementById('mm-detail').innerHTML = `
+    <div class="mm-detail-cat" style="color:#a99ffa">Vocabulary Term — ${card.lecture}</div>
+    <div class="mm-detail-title">${card.term}</div>
+    <div style="font-size:13px;line-height:1.65;color:var(--text);margin-bottom:12px">${card.def}</div>
+    ${card.connection?`<div class="mm-detail-thesis" style="border-color:var(--accent3);color:var(--accent3)">${card.connection}</div>`:''}
+    ${rChips?`<div class="mm-section-label">Discussed In</div><div class="mm-chips">${rChips}</div>`:''}
+    <div class="mm-section-label">Go to Flashcard</div>
+    <button class="btn-primary mm-go-btn" onclick="mmGoFlash('${termId}')">Open Flashcard →</button>
+  `;
+}
+
+function mmGoFlash(termId) {
+  showSection('flashcards');
+  filterCards('all', document.querySelector('.filter-btn'));
+  const idx = filteredCards.findIndex(c=>c.id===termId);
+  if (idx!==-1){ currentCard=idx; isFlipped=false; document.getElementById('fc-scene').classList.remove('flipped'); renderCard(); }
+}
+
+// ════════════════════════════════════════════════════════
+// QUIZ LOGIC
+// ════════════════════════════════════════════════════════
+let quizQuestions = [];
+let quizIdx = 0;
+let quizScore = 0;
+let answered = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  quizQuestions = shuffle(QUIZ_QUESTIONS).slice(0, 15);
+  quizIdx = 0; quizScore = 0;
+  document.getElementById('quiz-start').style.display = 'none';
+  document.getElementById('quiz-body').style.display = 'block';
+  document.getElementById('quiz-result').classList.remove('show');
+  showQuestion();
+}
+
+function showQuestion() {
+  answered = false;
+  const q = quizQuestions[quizIdx];
+  document.getElementById('q-num').textContent = `Question ${quizIdx + 1} of ${quizQuestions.length}`;
+  document.getElementById('q-score-live').textContent = `Score: ${quizScore}/${quizIdx}`;
+  document.getElementById('q-fill').style.width = `${(quizIdx / quizQuestions.length) * 100}%`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-feedback').className = 'q-feedback';
+  document.getElementById('q-next-btn').style.display = 'none';
+
+  const opts = shuffle(q.options.map((o, i) => ({text: o, idx: i})));
+  document.getElementById('q-options').innerHTML = opts.map(o =>
+    `<button class="q-option" onclick="selectAnswer(${o.idx}, ${q.correct}, this)">${o.text}</button>`
+  ).join('');
+}
+
+function selectAnswer(chosen, correct, btn) {
+  if (answered) return;
+  answered = true;
+  const q = quizQuestions[quizIdx];
+  document.querySelectorAll('.q-option').forEach(b => b.disabled = true);
+
+  if (chosen === correct) {
+    quizScore++;
+    btn.classList.add('correct');
+    const fb = document.getElementById('q-feedback');
+    fb.className = 'q-feedback correct-fb show';
+    fb.innerHTML = `<strong>Correct!</strong> ${q.feedback}`;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.q-option').forEach(b => {
+      if (b.textContent === q.options[correct]) b.classList.add('correct');
+    });
+    const fb = document.getElementById('q-feedback');
+    fb.className = 'q-feedback wrong-fb show';
+    fb.innerHTML = `<strong>Not quite.</strong> ${q.feedback}`;
+  }
+  document.getElementById('q-next-btn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+  quizIdx++;
+  if (quizIdx >= quizQuestions.length) {
+    showResult();
+  } else {
+    showQuestion();
+  }
+}
+
+function showResult() {
+  document.getElementById('quiz-body').style.display = 'none';
+  const result = document.getElementById('quiz-result');
+  result.classList.add('show');
+  const pct = Math.round((quizScore / quizQuestions.length) * 100);
+  document.getElementById('result-score').textContent = `${quizScore}/${quizQuestions.length}`;
+  const labels = ['Keep studying — you\'ve got this!', 'Good start — review the readings!', 'Solid — almost there!', 'Great work!', 'Excellent — exam ready!'];
+  document.getElementById('result-label').textContent = labels[Math.floor(pct/25)];
+}
+
+function restartQuiz() {
+  document.getElementById('quiz-result').classList.remove('show');
+  document.getElementById('quiz-start').style.display = 'block';
+}
+
+// ════════════════════════════════════════════════════════
+// TIMELINE
+// ════════════════════════════════════════════════════════
+function buildTimeline() {
+  const el = document.getElementById('timeline-list');
+  el.innerHTML = TIMELINE_EVENTS.map(e => `
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date">${e.date}</div>
+      <div class="tl-title">${e.title}</div>
+      <div class="tl-desc">${e.desc}</div>
+      <div class="tl-tags">${e.tags.map(t => `<span class="tl-tag">${t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════════════════════
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if (b.getAttribute('onclick').includes(id)) b.classList.add('active');
+  });
+  if (id === 'mindmap') mmRender();
+}
+
+// ════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════
+renderCard();
+buildReadings();
+buildTimeline();
+</script>
+</body>
+</html>
