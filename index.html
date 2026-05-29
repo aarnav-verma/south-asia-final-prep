@@ -121,6 +121,18 @@
   .fc-nav .fc-counter { font-size: 14px; color: var(--text-muted); min-width: 80px; text-align: center; }
   .fc-hint { font-size: 12px; color: var(--text-muted); text-align: center; }
 
+  /* STAR */
+  .fc-star {
+    position: absolute; top: 12px; right: 14px; z-index: 2;
+    background: transparent; border: none; cursor: pointer;
+    font-size: 24px; line-height: 1; padding: 4px 6px;
+    color: var(--border); transition: color 0.15s, transform 0.15s;
+  }
+  .fc-star:hover { transform: scale(1.25); color: #f5c542; }
+  .fc-star.starred { color: #f5c542; }
+  .filter-btn.starred-btn { border-color: #f5c542; color: #f5c542; }
+  .filter-btn.starred-btn.active { background: #f5c542; border-color: #f5c542; color: #000; }
+
   /* READINGS */
   .readings-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -358,6 +370,7 @@
     <button class="filter-btn" onclick="filterCards('L22', this)">Lec 22</button>
     <button class="filter-btn" onclick="filterCards('L23', this)">Lec 23</button>
     <button class="filter-btn" onclick="filterCards('L24', this)">Lec 24</button>
+    <button class="filter-btn starred-btn" id="starred-filter-btn" onclick="filterCards('starred', this)">★ Starred</button>
     <span class="fc-progress" id="fc-progress"></span>
   </div>
 
@@ -365,6 +378,7 @@
     <div class="fc-scene" id="fc-scene" onclick="flipCard()">
       <div class="fc-inner" id="fc-inner">
         <div class="fc-front">
+          <button class="fc-star" id="fc-star" onclick="toggleStar(event)" title="Star this card">☆</button>
           <div class="fc-label">Term</div>
           <div class="fc-term" id="fc-term">—</div>
           <div class="fc-lecture" id="fc-lecture"></div>
@@ -375,7 +389,7 @@
         </div>
       </div>
     </div>
-    <p class="fc-hint">Click card to flip • Use arrows to navigate</p>
+    <p class="fc-hint">Click card to flip • Arrow keys to navigate • ☆ to star</p>
     <div class="fc-nav">
       <button onclick="prevCard()">← Prev</button>
       <span class="fc-counter" id="fc-counter">1 / 1</span>
@@ -943,11 +957,62 @@ let allCards = [...CARDS];
 let filteredCards = [...CARDS];
 let currentCard = 0;
 let isFlipped = false;
+let currentFilter = 'all';
+
+// ── Starred cards (persisted to localStorage) ──
+let starredCards = new Set(JSON.parse(localStorage.getItem('hist90-stars') || '[]'));
+
+function saveStars() {
+  localStorage.setItem('hist90-stars', JSON.stringify([...starredCards]));
+}
+
+function toggleStar(e) {
+  e.stopPropagation();
+  const card = filteredCards[currentCard];
+  if (!card) return;
+  if (starredCards.has(card.id)) {
+    starredCards.delete(card.id);
+  } else {
+    starredCards.add(card.id);
+  }
+  saveStars();
+  updateStarBtn();
+  // Keep starred-filter list live — remove unstarred card immediately
+  if (currentFilter === 'starred') {
+    filteredCards = CARDS.filter(c => starredCards.has(c.id));
+    if (currentCard >= filteredCards.length) currentCard = Math.max(0, filteredCards.length - 1);
+    renderCard();
+  }
+  // Update the Starred filter button count
+  updateStarredFilterBtn();
+}
+
+function updateStarBtn() {
+  const btn = document.getElementById('fc-star');
+  if (!btn) return;
+  const card = filteredCards[currentCard];
+  const starred = card && starredCards.has(card.id);
+  btn.textContent = starred ? '★' : '☆';
+  btn.classList.toggle('starred', !!starred);
+  btn.title = starred ? 'Unstar this card' : 'Star this card';
+}
+
+function updateStarredFilterBtn() {
+  const btn = document.getElementById('starred-filter-btn');
+  if (!btn) return;
+  const count = starredCards.size;
+  btn.textContent = count ? `★ Starred (${count})` : '★ Starred';
+}
 
 function filterCards(tag, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  filteredCards = tag === 'all' ? [...CARDS] : CARDS.filter(c => c.tag === tag);
+  currentFilter = tag;
+  if (tag === 'starred') {
+    filteredCards = CARDS.filter(c => starredCards.has(c.id));
+  } else {
+    filteredCards = tag === 'all' ? [...CARDS] : CARDS.filter(c => c.tag === tag);
+  }
   currentCard = 0;
   isFlipped = false;
   document.getElementById('fc-scene').classList.remove('flipped');
@@ -955,7 +1020,17 @@ function filterCards(tag, btn) {
 }
 
 function renderCard() {
-  if (!filteredCards.length) return;
+  if (!filteredCards.length) {
+    // Empty state (only happens when Starred filter is active with no stars)
+    document.getElementById('fc-term').textContent = 'No starred cards yet';
+    document.getElementById('fc-lecture').textContent = '';
+    document.getElementById('fc-def').textContent = 'Hit ☆ on any card to star it for later review.';
+    document.getElementById('fc-connection').textContent = '';
+    document.getElementById('fc-counter').textContent = '—';
+    document.getElementById('fc-progress').textContent = '0 cards';
+    updateStarBtn();
+    return;
+  }
   const c = filteredCards[currentCard];
   document.getElementById('fc-term').textContent = c.term;
   document.getElementById('fc-lecture').textContent = c.lecture;
@@ -963,6 +1038,7 @@ function renderCard() {
   document.getElementById('fc-connection').textContent = c.connection || '';
   document.getElementById('fc-counter').textContent = `${currentCard + 1} / ${filteredCards.length}`;
   document.getElementById('fc-progress').textContent = `${filteredCards.length} cards`;
+  updateStarBtn();
 }
 
 function flipCard() {
@@ -1478,6 +1554,7 @@ function showSection(id) {
 // INIT
 // ════════════════════════════════════════════════════════
 renderCard();
+updateStarredFilterBtn();
 buildReadings();
 buildTimeline();
 </script>
